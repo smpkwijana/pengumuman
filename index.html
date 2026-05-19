@@ -108,7 +108,7 @@
                 </div>
             </div>
 
-            <!-- Form Pencarian -->
+            <!-- Form Pencarian (Tampilan Default Utama) -->
             <div class="p-6 md:p-8" id="search-section">
                 <p class="text-sm text-slate-500 mb-6 text-center leading-relaxed">
                     Silakan masukkan **Nomor Peserta Ujian** atau **NISN** Anda untuk melihat status kelulusan secara online.
@@ -412,6 +412,43 @@
 
         </div>
     </section>
+
+    <!-- MODAL LOGIN ADMIN -->
+    <div id="admin-login-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden no-print">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-sm w-full overflow-hidden border border-slate-100 transition-all transform scale-95 opacity-0 duration-300" id="login-modal-card">
+            <div class="bg-blue-955 text-white p-5 text-center">
+                <i class="fa-solid fa-user-shield text-3xl text-yellow-400 mb-2"></i>
+                <h3 class="font-bold text-base">Login Administrator</h3>
+                <p class="text-[11px] text-blue-200">Masukkan akun administrator untuk mengelola pengumuman</p>
+            </div>
+            
+            <form onsubmit="handleAdminLogin(event)" class="p-6 space-y-4">
+                <div>
+                    <label for="admin-username" class="block text-xs font-semibold uppercase text-slate-600 mb-1.5">Nama Pengguna (Username)</label>
+                    <input type="text" id="admin-username" placeholder="Username default: admin" required
+                        class="w-full border border-slate-200 rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div>
+                    <label for="admin-password" class="block text-xs font-semibold uppercase text-slate-600 mb-1.5">Kata Sandi (Password)</label>
+                    <input type="password" id="admin-password" placeholder="Sandi default: adminwijana" required
+                        class="w-full border border-slate-200 rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div class="text-[10px] text-slate-400 italic bg-slate-50 p-2.5 rounded border border-slate-100">
+                    *Akun Bawaan:<br>
+                    - Username: <span class="font-mono bg-slate-200 px-1 py-0.5 rounded text-slate-700">admin</span><br>
+                    - Password: <span class="font-mono bg-slate-200 px-1 py-0.5 rounded text-slate-700">adminwijana</span>
+                </div>
+                <div class="flex gap-2">
+                    <button type="submit" class="flex-1 bg-blue-950 hover:bg-blue-900 text-white text-xs font-bold py-2.5 px-4 rounded-lg shadow transition">
+                        Masuk
+                    </button>
+                    <button type="button" onclick="closeAdminModal()" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold py-2.5 px-4 rounded-lg transition">
+                        Batal
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
 
     <!-- MODAL FORM TAMBAH / EDIT SISWA -->
     <div id="student-form-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden no-print overflow-y-auto">
