@@ -1,0 +1,1846 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pengumuman Kelulusan - SMP Katolik Wijana</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .serif-font {
+            font-family: 'Playfair Display', serif;
+        }
+        .sans-font {
+            font-family: 'Inter', sans-serif;
+        }
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            #print-area, #print-area * {
+                visibility: visible;
+            }
+            #print-area {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                border: none !important;
+                box-shadow: none !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+            .no-print {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col justify-between">
+
+    <!-- Sistem Notifikasi Toast Kustom (Mengganti Browser Alert) -->
+    <div id="toast-container" class="fixed top-5 right-5 z-50 flex flex-col gap-3 max-w-sm w-full no-print"></div>
+
+    <!-- Main Content (Siswa View) -->
+    <main id="student-view" class="flex-grow flex flex-col items-center justify-center px-4 py-8 md:py-16 no-print">
+        
+        <!-- Logo & Nama Sekolah (Diletakkan di atas Card sebagai ganti Header) -->
+        <div class="flex flex-col items-center mb-6 text-center select-none cursor-pointer" ondblclick="openAdminModal()" title="Klik 2x untuk Login Admin">
+            <div id="card-logo-container" class="w-16 h-16 bg-yellow-500 rounded-full flex items-center justify-center font-bold text-blue-900 text-3xl shadow-md overflow-hidden mb-3 border-2 border-white">
+                W
+            </div>
+            <h1 id="card-school-name" class="text-base md:text-lg font-extrabold tracking-wider uppercase text-blue-900 leading-tight">SMP KATOLIK WIJANA</h1>
+            <p id="card-school-motto" class="text-xs text-slate-500 font-medium">Veritas, Caritas, Intellegentia</p>
+        </div>
+
+        <div id="search-card" class="max-w-md w-full bg-white rounded-2xl shadow-xl border border-slate-100 overflow-hidden transition-all duration-300 transform hover:shadow-2xl">
+            <!-- Banner Atas -->
+            <div class="bg-gradient-to-r from-blue-900 to-blue-800 text-white p-6 text-center relative overflow-hidden select-none cursor-pointer" ondblclick="openAdminModal()" title="Klik 2x untuk Login Admin">
+                <div class="absolute -right-10 -top-10 w-32 h-32 bg-yellow-500 opacity-10 rounded-full"></div>
+                <div class="absolute -left-10 -bottom-10 w-24 h-24 bg-white opacity-5 rounded-full"></div>
+                
+                <i class="fa-solid fa-graduation-cap text-4xl text-yellow-400 mb-3 animate-bounce"></i>
+                <h2 class="text-xl md:text-2xl font-extrabold tracking-tight">PENGUMUMAN KELULUSAN</h2>
+                <p class="text-blue-200 text-xs md:text-sm mt-1" id="banner-year-text">Tahun Ajaran 2025/2026</p>
+            </div>
+
+            <!-- TAMPILAN HITUNG MUNDUR (COUNTDOWN) -->
+            <div class="p-6 md:p-8 hidden text-center" id="countdown-section">
+                <div class="w-16 h-16 bg-amber-50 rounded-full flex items-center justify-center mx-auto mb-4 text-amber-500 text-3xl border border-amber-200">
+                    <i class="fa-solid fa-hourglass-half animate-spin [animation-duration:3s]"></i>
+                </div>
+                <h3 class="text-base font-bold text-slate-800 mb-1">Pengumuman Belum Dibuka</h3>
+                <p class="text-xs text-slate-500 mb-6 leading-relaxed">
+                    Sistem pengumuman kelulusan online SMP Katolik Wijana baru dapat diakses setelah waktu rilis resmi berikut:
+                </p>
+                
+                <!-- Info Tanggal Rilis -->
+                <div class="bg-slate-50 border border-slate-100 rounded-xl p-3 mb-6">
+                    <p id="countdown-target-time" class="text-xs font-bold text-blue-900 uppercase tracking-wider">-</p>
+                </div>
+
+                <!-- Angka Hitung Mundur Grid -->
+                <div class="grid grid-cols-4 gap-2 mb-2">
+                    <div class="bg-blue-900 text-white p-3 rounded-xl">
+                        <span id="cd-days" class="block text-xl font-black">00</span>
+                        <span class="text-[9px] uppercase tracking-wider font-semibold text-blue-200">Hari</span>
+                    </div>
+                    <div class="bg-blue-900 text-white p-3 rounded-xl">
+                        <span id="cd-hours" class="block text-xl font-black">00</span>
+                        <span class="text-[9px] uppercase tracking-wider font-semibold text-blue-200">Jam</span>
+                    </div>
+                    <div class="bg-blue-900 text-white p-3 rounded-xl">
+                        <span id="cd-minutes" class="block text-xl font-black">00</span>
+                        <span class="text-[9px] uppercase tracking-wider font-semibold text-blue-200">Menit</span>
+                    </div>
+                    <div class="bg-blue-900 text-white p-3 rounded-xl">
+                        <span id="cd-seconds" class="block text-xl font-black">00</span>
+                        <span class="text-[9px] uppercase tracking-wider font-semibold text-blue-200">Detik</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form Pencarian (Tampilan Default Utama) -->
+            <div class="p-6 md:p-8" id="search-section">
+                <p class="text-sm text-slate-500 mb-6 text-center leading-relaxed">
+                    Silakan masukkan **Nomor Peserta Ujian** atau **NISN** Anda untuk melihat status kelulusan secara online.
+                </p>
+
+                <form id="search-form" onsubmit="handleSearch(event)">
+                    <div class="mb-5">
+                        <label for="search-input" class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-2">Nomor Ujian / NISN</label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400">
+                                <i class="fa-solid fa-id-card"></i>
+                            </span>
+                            <input type="text" id="search-input" required placeholder="Contoh: 2-25-01-02-005 atau NISN" 
+                                class="w-full pl-10 pr-4 py-3 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm font-medium transition duration-150">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="w-full bg-yellow-500 hover:bg-yellow-600 text-blue-950 font-bold py-3 px-4 rounded-lg shadow-md hover:shadow-lg transition duration-200 flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-magnifying-glass"></i> Periksa Hasil Kelulusan
+                    </button>
+                </form>
+            </div>
+
+            <!-- Loading State -->
+            <div class="p-8 hidden text-center" id="loading-section">
+                <div class="inline-block animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-blue-950 mb-4"></div>
+                <p class="text-sm font-medium text-slate-600">Mencari data siswa di database...</p>
+            </div>
+
+            <!-- Error State / Not Found -->
+            <div class="p-8 hidden text-center" id="error-section">
+                <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4 text-red-600 text-2xl">
+                    <i class="fa-solid fa-circle-xmark"></i>
+                </div>
+                <h3 class="text-lg font-bold text-slate-800 mb-2">Data Tidak Ditemukan</h3>
+                <p class="text-sm text-slate-500 mb-6 leading-relaxed">
+                    Nomor Peserta atau NISN yang Anda masukkan tidak terdaftar. Pastikan format penulisan sudah benar atau hubungi panitia kelulusan sekolah.
+                </p>
+                <button onclick="resetSearch()" class="inline-flex items-center gap-2 text-sm bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold py-2 px-5 rounded-lg transition duration-150">
+                    <i class="fa-solid fa-arrow-left"></i> Kembali
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Admin View (Dashboard Admin) -->
+    <main id="admin-view" class="flex-grow max-w-6xl w-full mx-auto px-4 py-8 hidden no-print">
+        <div class="bg-white rounded-2xl shadow-xl border border-slate-100 overflow-hidden">
+            <!-- Header Admin -->
+            <div class="bg-slate-900 text-white p-6 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
+                <div>
+                    <h2 class="text-xl font-bold flex items-center gap-2">
+                        <i class="fa-solid fa-toolbox text-yellow-400"></i>
+                        Dashboard Administrator Kelulusan
+                    </h2>
+                    <p class="text-xs text-slate-300 mt-1">Kelola data siswa, status kelulusan, nilai ujian, kustomisasi layout SKL, and Google Sheets.</p>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                    <!-- Google Sheet / Apps Script Button -->
+                    <button onclick="openConfigModal()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs py-2 px-4 rounded-lg transition flex items-center gap-1.5">
+                        <i class="fa-solid fa-file-excel"></i> Hubungkan Google Sheets / API
+                    </button>
+                    <button onclick="openLayoutSettingsModal()" class="bg-amber-500 hover:bg-amber-600 text-blue-950 font-bold text-xs py-2 px-4 rounded-lg transition flex items-center gap-1.5">
+                        <i class="fa-solid fa-palette"></i> Atur Layout SKL
+                    </button>
+                    <button id="btn-share-link" onclick="copyShareableLink()" class="bg-teal-600 hover:bg-teal-500 text-white font-bold text-xs py-2 px-4 rounded-lg transition flex items-center gap-1.5" title="Salin link yang otomatis terhubung untuk disebar ke siswa">
+                        <i class="fa-solid fa-share-nodes"></i> Bagikan Link App
+                    </button>
+                    <button onclick="openStudentFormModal()" class="bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs py-2 px-4 rounded-lg transition flex items-center gap-1.5">
+                        <i class="fa-solid fa-plus"></i> Tambah Siswa
+                    </button>
+                    <button onclick="exportData()" class="bg-slate-800 hover:bg-slate-700 text-white font-semibold text-xs py-2 px-4 rounded-lg transition flex items-center gap-1.5">
+                        <i class="fa-solid fa-file-export"></i> Ekspor JSON
+                    </button>
+                    <button onclick="triggerImport()" class="bg-slate-800 hover:bg-slate-700 text-white font-semibold text-xs py-2 px-4 rounded-lg transition flex items-center gap-1.5">
+                        <i class="fa-solid fa-file-import"></i> Impor JSON
+                    </button>
+                    <input type="file" id="import-file" class="hidden" accept=".json" onchange="importData(event)">
+                    <button onclick="logoutAdmin()" class="bg-red-600 hover:bg-red-500 text-white font-bold text-xs py-2 px-4 rounded-lg transition flex items-center gap-1.5">
+                        <i class="fa-solid fa-right-from-bracket"></i> Keluar Ke Siswa
+                    </button>
+                </div>
+            </div>
+
+            <!-- Statistik Singkat -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 p-6 bg-slate-50 border-b border-slate-100">
+                <div class="bg-white p-4 rounded-xl border border-slate-150 shadow-sm">
+                    <p class="text-xs text-slate-500 font-semibold uppercase">Total Siswa</p>
+                    <p id="stat-total" class="text-2xl font-black text-blue-900 mt-1">0</p>
+                </div>
+                <div class="bg-white p-4 rounded-xl border border-slate-150 shadow-sm">
+                    <p class="text-xs text-slate-500 font-semibold uppercase">Lulus</p>
+                    <p id="stat-lulus" class="text-2xl font-black text-emerald-600 mt-1">0</p>
+                </div>
+                <div class="bg-white p-4 rounded-xl border border-slate-150 shadow-sm">
+                    <p class="text-xs text-slate-500 font-semibold uppercase">Tidak Lulus</p>
+                    <p id="stat-tidak" class="text-2xl font-black text-red-500 mt-1">0</p>
+                </div>
+                <div class="bg-white p-4 rounded-xl border border-slate-150 shadow-sm">
+                    <p class="text-xs text-slate-500 font-semibold uppercase">Sumber Data</p>
+                    <p id="stat-sumber" class="text-sm font-bold text-slate-700 mt-2 truncate">Belum Terhubung</p>
+                </div>
+            </div>
+
+            <!-- Warning Parameter Multi-Device -->
+            <div id="share-warning-banner" class="mx-6 mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg text-xs text-blue-800 flex items-center justify-between">
+                <span class="flex items-center gap-2">
+                    <i class="fa-solid fa-circle-info text-blue-600 text-sm"></i>
+                    <span><strong>Tips Multi-Perangkat:</strong> Agar siswa di perangkat lain otomatis terhubung ke data Anda, bagikan aplikasi menggunakan tombol <strong>"Bagikan Link App"</strong> di kanan atas.</span>
+                </span>
+            </div>
+
+            <!-- Tabel Data Siswa -->
+            <div class="p-6">
+                <div class="flex flex-col md:flex-row justify-between items-center mb-4 gap-3">
+                    <div class="relative w-full md:w-72">
+                        <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400">
+                            <i class="fa-solid fa-magnifying-glass text-xs"></i>
+                        </span>
+                        <input type="text" id="admin-search-input" oninput="renderAdminTable()" placeholder="Cari nama, nomor, atau NISN..." 
+                            class="w-full pl-9 pr-4 py-2 border border-slate-200 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div class="flex gap-2 w-full md:w-auto justify-end">
+                        <button onclick="resetToDefaultData()" class="text-xs text-red-600 hover:text-red-700 font-semibold py-2 px-3 hover:bg-red-50 rounded transition">
+                            <i class="fa-solid fa-trash-can"></i> Kosongkan Database
+                        </button>
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto border border-slate-200 rounded-xl">
+                    <table class="w-full text-left text-xs border-collapse">
+                        <thead>
+                            <tr class="bg-slate-100 text-slate-600 border-b border-slate-200 font-bold uppercase tracking-wider">
+                                <th class="p-3">No. Ujian / NISN</th>
+                                <th class="p-3">Nama Lengkap</th>
+                                <th class="p-3">Orang Tua / TTL</th>
+                                <th class="p-3 text-center">Status</th>
+                                <th class="p-3 text-center">Nilai Rata2</th>
+                                <th class="p-3 text-center">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-table-body" class="divide-y divide-slate-100">
+                            <!-- Data dirender melalui JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Surat Keterangan Kelulusan (SKL) -->
+    <section id="result-section" class="hidden max-w-3xl mx-auto px-4 py-8">
+        <div class="bg-white p-6 md:p-10 rounded-2xl shadow-xl border border-slate-100 mb-6 no-print">
+            <div class="flex flex-col sm:flex-row justify-between items-center pb-6 border-b border-slate-100 mb-6 gap-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600">
+                        <i class="fa-solid fa-circle-check text-xl animate-pulse"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-slate-800">Pencarian Berhasil</h4>
+                        <p class="text-xs text-slate-500">Silakan cetak hasil kelulusan di bawah ini.</p>
+                    </div>
+                </div>
+                <div class="flex gap-2">
+                    <button onclick="window.print()" class="bg-blue-900 hover:bg-blue-800 text-white font-semibold text-xs md:text-sm py-2 px-4 rounded-lg shadow transition flex items-center gap-2">
+                        <i class="fa-solid fa-print"></i> Cetak SKL
+                    </button>
+                    <button onclick="resetSearch()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs md:text-sm py-2 px-4 rounded-lg transition flex items-center gap-1.5">
+                        <i class="fa-solid fa-rotate-left"></i> Cari Lagi
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dokumen SKL Resmi yang bisa dicetak -->
+        <div id="print-area" class="bg-white p-8 md:p-12 shadow-md border border-slate-200 rounded-lg max-w-2xl mx-auto text-black text-sm relative">
+            
+            <!-- Watermark Kelulusan -->
+            <div id="skl-watermark" class="absolute inset-0 flex items-center justify-center pointer-events-none select-none z-0">
+                <!-- Watermark content will be dynamic -->
+            </div>
+
+            <!-- KOP SURAT SEKOLAH -->
+            <div id="skl-kop-wrapper" class="flex items-center justify-between border-b-4 border-double border-slate-800 pb-4 mb-6 relative z-10">
+                <!-- Logo Yayasan (Kiri) -->
+                <div id="skl-logo-yayasan-box" class="w-16 h-16 mr-4 rounded-full flex-shrink-0 flex items-center justify-center text-xs font-bold text-center overflow-hidden border border-slate-300">
+                    <div class="w-full h-full bg-slate-200 flex items-center justify-center text-[10px] uppercase">YAYASAN</div>
+                </div>
+                <!-- Detail Teks Kop (Tengah) -->
+                <div class="text-center flex-grow px-2">
+                    <h2 id="skl-kop-yayasan" class="text-sm md:text-base font-bold tracking-wide leading-tight uppercase">YAYASAN PENDIDIKAN KATOLIK</h2>
+                    <h1 id="skl-kop-sekolah" class="text-lg md:text-xl font-extrabold tracking-wider leading-none uppercase text-blue-900">SMP KATOLIK WIJANA</h1>
+                    <p id="skl-kop-alamat" class="text-[10px] text-slate-600 mt-1 italic leading-tight">
+                        Jl. Rajawali No. 12, Kota Kediri, Jawa Timur, Telp: (0354) 123456 <br>
+                        Email: info@smpkwijana.sch.id | Website: www.smpkwijana.sch.id
+                    </p>
+                </div>
+                <!-- Logo Sekolah (Kanan) -->
+                <div id="skl-logo-box" class="w-16 h-16 ml-4 rounded-full flex-shrink-0 flex items-center justify-center text-xs font-bold text-center overflow-hidden border border-slate-300">
+                    <div class="w-full h-full bg-slate-200 flex items-center justify-center text-[10px] uppercase">SEKOLAH</div>
+                </div>
+            </div>
+
+            <!-- Judul Surat -->
+            <div class="text-center mb-6 relative z-10" id="skl-title-section">
+                <h3 class="font-bold uppercase tracking-wide text-base border-b border-black inline-block px-4">SURAT KETERANGAN KELULUSAN SEMENTARA</h3>
+                <p class="text-xs mt-1">Nomor: <span id="skl-no-surat">421.3/SKL-SMP/VI/2026</span></p>
+            </div>
+
+            <!-- Paragraf Pembuka -->
+            <p class="mb-4 text-justify leading-relaxed relative z-10" id="skl-opening-text">
+                Yang bertanda tangan di bawah ini, Kepala Sekolah Menengah Pertama (SMP) Katolik Wijana, menerangkan bahwa:
+            </p>
+
+            <!-- Detail Siswa -->
+            <div class="ml-4 md:ml-8 mb-6 space-y-2.5 relative z-10" id="skl-student-details">
+                <div class="grid grid-cols-12 gap-1">
+                    <span class="col-span-4 font-semibold">Nama Lengkap</span>
+                    <span class="col-span-1 text-center">:</span>
+                    <span class="col-span-7 font-bold uppercase" id="skl-nama">-</span>
+                </div>
+                <div class="grid grid-cols-12 gap-1">
+                    <span class="col-span-4 font-semibold">Tempat, Tanggal Lahir</span>
+                    <span class="col-span-1 text-center">:</span>
+                    <span class="col-span-7" id="skl-ttl">-</span>
+                </div>
+                <div class="grid grid-cols-12 gap-1">
+                    <span class="col-span-4 font-semibold">Nama Orang Tua / Wali</span>
+                    <span class="col-span-1 text-center">:</span>
+                    <span class="col-span-7" id="skl-ortu">-</span>
+                </div>
+                <div class="grid grid-cols-12 gap-1">
+                    <span class="col-span-4 font-semibold">Nomor Peserta Ujian</span>
+                    <span class="col-span-1 text-center">:</span>
+                    <span class="col-span-7 font-mono font-semibold" id="skl-no-ujian">-</span>
+                </div>
+                <div class="grid grid-cols-12 gap-1">
+                    <span class="col-span-4 font-semibold">NIS / NISN</span>
+                    <span class="col-span-1 text-center">:</span>
+                    <span class="col-span-7" id="skl-nisn">-</span>
+                </div>
+            </div>
+
+            <!-- Pernyataan Status -->
+            <div class="p-4 bg-slate-100 border border-slate-300 rounded-lg text-center my-6 relative z-10" id="skl-status-badge">
+                <p class="text-xs text-slate-600 uppercase tracking-wide font-medium">Berdasarkan hasil rapat Pleno Dewan Guru, yang bersangkutan dinyatakan:</p>
+                <p class="text-3xl font-extrabold tracking-widest mt-1 text-emerald-700 uppercase" id="skl-status">LULUS</p>
+            </div>
+
+            <!-- Daftar Nilai -->
+            <div id="nilai-container" class="mb-6 hidden relative z-10">
+                <p class="font-bold mb-2">Nilai Rata-rata Ujian Sekolah:</p>
+                <table class="w-full border-collapse border border-slate-400 text-xs">
+                    <thead>
+                        <tr class="bg-slate-100">
+                            <th class="border border-slate-400 px-3 py-1.5 text-left w-12">No.</th>
+                            <th class="border border-slate-400 px-3 py-1.5 text-left">Mata Pelajaran</th>
+                            <th class="border border-slate-400 px-3 py-1.5 text-center w-24">Nilai</th>
+                        </tr>
+                    </thead>
+                    <tbody id="nilai-rows">
+                        <!-- Nilai akan dimasukkan secara dinamis -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Paragraf Penutup -->
+            <p class="mb-8 text-justify leading-relaxed relative z-10" id="skl-closing-text">
+                Surat keterangan ini diberikan sebagai jaminan kelulusan sementara sebelum diterbitkannya Ijazah Resmi oleh Kementerian Pendidikan Nasional. Harap dipergunakan sebagaimana mestinya.
+            </p>
+
+            <!-- Tanda Tangan -->
+            <div class="flex justify-between items-start mt-12 relative z-10" id="skl-signature-block">
+                <div>
+                    <!-- Pas Foto Space -->
+                    <div id="skl-photo-box" class="w-24 h-32 border border-slate-400 bg-slate-50 flex items-center justify-center text-[10px] text-slate-400 font-semibold uppercase relative">
+                        Pas Foto <br> 3 x 4
+                    </div>
+                </div>
+                <div class="text-right w-72 relative min-h-[160px]">
+                    <p class="mb-1" id="skl-tempat-tanggal-surat">Kediri, 12 Juni 2026</p>
+                    <p id="skl-tanda-tangan-jabatan" class="font-semibold">Kepala Sekolah SMP Katolik Wijana,</p>
+                    
+                    <!-- Area TTD & Stempel (Absolute overlapping container) -->
+                    <div class="relative h-24 my-1 w-full flex justify-end">
+                        <!-- Container Stempel (Sebelah kiri, melayang di atas TTD) -->
+                        <div id="skl-stempel-img-container" class="absolute left-4 top-0 w-28 h-28 pointer-events-none z-10 hidden">
+                            <!-- Rendered dynamically -->
+                        </div>
+                        <!-- Container TTD (Kanan bawah jabatan) -->
+                        <div id="skl-ttd-img-container" class="w-40 h-20 flex items-center justify-center hidden">
+                            <!-- Rendered dynamically -->
+                        </div>
+                    </div>
+
+                    <p id="skl-nama-kepsek" class="font-bold underline uppercase">Sr. Maria Goretti, M.Pd.</p>
+                    <p id="skl-nip-kepsek" class="text-xs text-slate-600">NIP. 19741203 200212 2 001</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- MODAL CONFIGURASI GOOGLE SHEETS / APPS SCRIPT -->
+    <div id="config-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden no-print">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden border border-slate-100 transition-all transform scale-95 opacity-0 duration-300" id="modal-card">
+            <div class="bg-blue-900 text-white p-5 flex justify-between items-center">
+                <h3 class="font-bold text-base flex items-center gap-2">
+                    <i class="fa-solid fa-cloud-arrow-down text-yellow-400"></i>
+                    Konfigurasi Google Sheets / Apps Script
+                </h3>
+                <button onclick="closeConfigModal()" class="text-white/80 hover:text-white hover:bg-white/10 rounded-full w-8 h-8 flex items-center justify-center transition">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            
+            <div class="p-6 space-y-4">
+                <p class="text-xs text-slate-500 leading-relaxed">
+                    Aplikasi ini dapat membaca database kelulusan menggunakan dua metode: **Google Apps Script Web App URL (Sangat Direkomendasikan - Real-time)** atau **Google Sheets CSV Publik**.
+                </p>
+
+                <!-- Panduan Cara Mengambil URL -->
+                <div class="bg-slate-50 p-4 rounded-lg border border-slate-100 text-xs text-slate-600 space-y-2">
+                    <p class="font-bold text-slate-800"><i class="fa-solid fa-code text-blue-600"></i> Cara Menggunakan Google Apps Script (Real-time):</p>
+                    <ol class="list-decimal pl-4 space-y-1">
+                        <li>Buka spreadsheet data kelulusan Anda di Google Drive.</li>
+                        <li>Pilih menu **Ekstensi** &gt; **Apps Script**.</li>
+                        <li>Salin kode Google Apps Script (`code.gs`) yang disediakan sekolah ke dalam editor tersebut.</li>
+                        <li>Klik **Terapkan (Deploy)** &gt; **Terapkan Baru (New Deployment)**.</li>
+                        <li>Atur jenis penerapan ke **Aplikasi Web (Web App)**.</li>
+                        <li>Atur akses *"Yang memiliki akses"* ke **Siapa saja (Anyone)** dan klik **Terapkan**.</li>
+                        <li>Salin **URL Aplikasi Web** yang diberikan lalu tempelkan di bawah ini.</li>
+                    </ol>
+                </div>
+
+                <div>
+                    <label for="sheet-url" class="block text-xs font-semibold uppercase text-slate-600 mb-1.5">Tautan URL (Apps Script Web App / CSV)</label>
+                    <input type="url" id="sheet-url" placeholder="https://script.google.com/macros/s/.../exec atau https://docs.google.com/.../pub?output=csv" 
+                        class="w-full border border-slate-200 rounded-lg p-2.5 text-xs font-mono focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+
+                <div class="flex gap-2">
+                    <button onclick="saveConfig()" class="flex-1 bg-blue-950 hover:bg-blue-900 text-white text-xs font-bold py-2.5 px-4 rounded-lg shadow transition">
+                        Simpan Koneksi
+                    </button>
+                    <button onclick="useDemoData()" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold py-2.5 px-4 rounded-lg transition">
+                        Gunakan Data Kosong (Reset)
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL LOGIN ADMIN -->
+    <div id="admin-login-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden no-print">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-sm w-full overflow-hidden border border-slate-100 transition-all transform scale-95 opacity-0 duration-300" id="login-modal-card">
+            <div class="bg-blue-955 text-white p-5 text-center">
+                <i class="fa-solid fa-user-shield text-3xl text-yellow-400 mb-2"></i>
+                <h3 class="font-bold text-base">Login Administrator</h3>
+                <p class="text-[11px] text-blue-200">Masukkan akun administrator untuk mengelola pengumuman</p>
+            </div>
+            
+            <form onsubmit="handleAdminLogin(event)" class="p-6 space-y-4">
+                <div>
+                    <label for="admin-username" class="block text-xs font-semibold uppercase text-slate-600 mb-1.5">Nama Pengguna (Username)</label>
+                    <input type="text" id="admin-username" placeholder="Username default: admin" required
+                        class="w-full border border-slate-200 rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div>
+                    <label for="admin-password" class="block text-xs font-semibold uppercase text-slate-600 mb-1.5">Kata Sandi (Password)</label>
+                    <input type="password" id="admin-password" placeholder="Sandi default: adminwijana" required
+                        class="w-full border border-slate-200 rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div class="text-[10px] text-slate-400 italic bg-slate-50 p-2.5 rounded border border-slate-100">
+                    *Akun Bawaan:<br>
+                    - Username: <span class="font-mono bg-slate-200 px-1 py-0.5 rounded text-slate-700">admin</span><br>
+                    - Password: <span class="font-mono bg-slate-200 px-1 py-0.5 rounded text-slate-700">adminwijana</span>
+                </div>
+                <div class="flex gap-2">
+                    <button type="submit" class="flex-1 bg-blue-950 hover:bg-blue-900 text-white text-xs font-bold py-2.5 px-4 rounded-lg shadow transition">
+                        Masuk
+                    </button>
+                    <button type="button" onclick="closeAdminModal()" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold py-2.5 px-4 rounded-lg transition">
+                        Batal
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL FORM TAMBAH / EDIT SISWA -->
+    <div id="student-form-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden no-print overflow-y-auto">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden border border-slate-100 transition-all transform scale-95 opacity-0 duration-300 my-8" id="student-modal-card">
+            <div class="bg-blue-900 text-white p-5 flex justify-between items-center">
+                <h3 class="font-bold text-base flex items-center gap-2" id="student-modal-title">
+                    <i class="fa-solid fa-user-pen text-yellow-400"></i>
+                    Formulir Data Siswa
+                </h3>
+                <button onclick="closeStudentFormModal()" class="text-white/80 hover:text-white hover:bg-white/10 rounded-full w-8 h-8 flex items-center justify-center transition">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            
+            <form id="student-form" onsubmit="saveStudentForm(event)" class="p-6 space-y-4 max-h-[70vh] overflow-y-auto">
+                <input type="hidden" id="edit-index" value="-1">
+                
+                <h4 class="font-bold text-xs text-blue-900 uppercase border-b border-slate-100 pb-1">Biodata Pokok</h4>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Nomor Ujian *</label>
+                        <input type="text" id="f-no-ujian" required placeholder="Contoh: 2-25-01-02-001" 
+                            class="w-full border border-slate-200 rounded-lg p-2 text-xs focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">NISN *</label>
+                        <input type="text" id="f-nisn" required placeholder="Contoh: 0102030401" 
+                            class="w-full border border-slate-200 rounded-lg p-2 text-xs focus:ring-2 focus:ring-blue-500">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">Nama Lengkap Siswa *</label>
+                    <input type="text" id="f-nama" required placeholder="Masukkan nama lengkap siswa" 
+                        class="w-full border border-slate-200 rounded-lg p-2 text-xs focus:ring-2 focus:ring-blue-500">
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Tempat, Tanggal Lahir</label>
+                        <input type="text" id="f-ttl" placeholder="Kediri, 12 Juni 2011" 
+                            class="w-full border border-slate-200 rounded-lg p-2 text-xs focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Nama Orang Tua / Wali</label>
+                        <input type="text" id="f-ortu" placeholder="Nama ayah/ibu/wali" 
+                            class="w-full border border-slate-200 rounded-lg p-2 text-xs focus:ring-2 focus:ring-blue-500">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">Status Kelulusan</label>
+                    <select id="f-status" class="w-full border border-slate-200 rounded-lg p-2 text-xs focus:ring-2 focus:ring-blue-500">
+                        <option value="LULUS">LULUS</option>
+                        <option value="TIDAK LULUS">TIDAK LULUS</option>
+                    </select>
+                </div>
+
+                <h4 class="font-bold text-xs text-blue-900 uppercase border-b border-slate-100 pb-1 pt-2">Nilai Ujian Sekolah (Opsional)</h4>
+                
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                    <div>
+                        <label class="block text-[11px] font-semibold text-slate-500 mb-1">Agama</label>
+                        <input type="number" id="f-n-agama" min="0" max="100" step="0.01" class="w-full border border-slate-200 rounded-lg p-1.5 text-xs">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-semibold text-slate-500 mb-1">B. Indonesia</label>
+                        <input type="number" id="f-n-indo" min="0" max="100" step="0.01" class="w-full border border-slate-200 rounded-lg p-1.5 text-xs">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-semibold text-slate-500 mb-1">B. Inggris</label>
+                        <input type="number" id="f-n-ing" min="0" max="100" step="0.01" class="w-full border border-slate-200 rounded-lg p-1.5 text-xs">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-semibold text-slate-500 mb-1">IPA</label>
+                        <input type="number" id="f-n-ipa" min="0" max="100" step="0.01" class="w-full border border-slate-200 rounded-lg p-1.5 text-xs">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-semibold text-slate-500 mb-1">Matematika</label>
+                        <input type="number" id="f-n-mat" min="0" max="100" step="0.01" class="w-full border border-slate-200 rounded-lg p-1.5 text-xs">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-semibold text-slate-500 mb-1">IPS</label>
+                        <input type="number" id="f-n-ips" min="0" max="100" step="0.01" class="w-full border border-slate-200 rounded-lg p-1.5 text-xs">
+                    </div>
+                </div>
+
+                <div class="flex gap-2 pt-4 border-t border-slate-100">
+                    <button type="submit" class="flex-1 bg-blue-900 hover:bg-blue-800 text-white text-xs font-bold py-2.5 rounded-lg shadow transition">
+                        Simpan Data
+                    </button>
+                    <button type="button" onclick="closeStudentFormModal()" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold py-2.5 rounded-lg transition">
+                        Batal
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL PENGATURAN LAYOUT SURAT (SKL) -->
+    <div id="layout-settings-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden no-print overflow-y-auto">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full overflow-hidden border border-slate-100 transition-all transform scale-95 opacity-0 duration-300 my-8" id="layout-modal-card">
+            <div class="bg-amber-500 text-blue-950 p-5 flex justify-between items-center">
+                <h3 class="font-bold text-base flex items-center gap-2">
+                    <i class="fa-solid fa-palette"></i>
+                    Atur Tata Letak & Desain SKL
+                </h3>
+                <button onclick="closeLayoutSettingsModal()" class="text-blue-950/80 hover:text-blue-950 hover:bg-black/10 rounded-full w-8 h-8 flex items-center justify-center transition">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            
+            <form id="layout-form" onsubmit="saveLayoutSettings(event)" class="p-6 space-y-6 max-h-[75vh] overflow-y-auto">
+                
+                <!-- BAGIAN 1: Desain KOP Surat & Warna -->
+                <div class="space-y-4">
+                    <h4 class="font-bold text-xs text-blue-900 uppercase border-b border-slate-100 pb-1.5 flex items-center gap-1.5">
+                        <i class="fa-solid fa-heading"></i> Desain KOP Surat & Estetika
+                    </h4>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Gaya Tampilan KOP</label>
+                            <select id="l-kop-style" class="w-full border border-slate-200 rounded-lg p-2 text-xs focus:ring-2 focus:ring-blue-500">
+                                <option value="double_logo">Dua Logo (Yayasan Kiri & Sekolah Kanan)</option>
+                                <option value="left_logo">Satu Logo Kiri (Logo Sekolah Saja)</option>
+                                <option value="no_logo">Tanpa Logo (Hanya Teks Tengah)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Gaya Huruf Dokumen (Font)</label>
+                            <select id="l-font-family" class="w-full border border-slate-200 rounded-lg p-2 text-xs focus:ring-2 focus:ring-blue-500">
+                                <option value="serif">Serif (Formal Akademik / Playfair)</option>
+                                <option value="sans">Sans-Serif (Modern Bersih / Inter)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Warna Aksen KOP (Nama Sekolah)</label>
+                            <select id="l-color-accent" class="w-full border border-slate-200 rounded-lg p-2 text-xs focus:ring-2 focus:ring-blue-500">
+                                <option value="text-blue-900">Biru Almamater (Default)</option>
+                                <option value="text-red-800">Merah Marun</option>
+                                <option value="text-slate-900">Hitam Pekat Klasik</option>
+                                <option value="text-emerald-900">Hijau Tua Formal</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Kerapatan Jarak Spasi</label>
+                            <select id="l-spacing-factor" class="w-full border border-slate-200 rounded-lg p-2 text-xs focus:ring-2 focus:ring-blue-500">
+                                <option value="compact">Padat (Sangat Direkomendasikan untuk 1 Lembar A4)</option>
+                                <option value="normal">Normal (Standard)</option>
+                                <option value="loose">Longgar (Berjarak Luas)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-1">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">URL Logo Yayasan (Kustom)</label>
+                            <input type="url" id="l-logo-yayasan-url" placeholder="https://smpkatolikwijana.sch.id/.../logo-yayasan.png" 
+                                class="w-full border border-slate-200 rounded-lg p-2 text-xs focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">URL Logo Sekolah (Kustom)</label>
+                            <input type="url" id="l-logo-url" placeholder="https://smpkatolikwijana.sch.id/.../logo.png" 
+                                class="w-full border border-slate-200 rounded-lg p-2 text-xs focus:ring-2 focus:ring-blue-500">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Nama Yayasan / Badan Penyelenggara</label>
+                            <input type="text" id="l-yayasan" required placeholder="YAYASAN PENDIDIKAN KATOLIK" 
+                                class="w-full border border-slate-200 rounded-lg p-2 text-xs focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Nama Lembaga Pendidikan / Sekolah</label>
+                            <input type="text" id="l-sekolah" required placeholder="SMP KATOLIK WIJANA" 
+                                class="w-full border border-slate-200 rounded-lg p-2 text-xs focus:ring-2 focus:ring-blue-500">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Detail Alamat KOP</label>
+                        <textarea id="l-alamat" rows="2" required placeholder="Jl. Rajawali No. 12, Kota Kediri, Jawa Timur" 
+                            class="w-full border border-slate-200 rounded-lg p-2 text-xs focus:ring-2 focus:ring-blue-500"></textarea>
+                    </div>
+                </div>
+
+                <!-- BAGIAN 2: Visibilitas & Watermark -->
+                <div class="space-y-4">
+                    <h4 class="font-bold text-xs text-blue-900 uppercase border-b border-slate-100 pb-1.5 flex items-center gap-1.5">
+                        <i class="fa-solid fa-eye"></i> Visibilitas & Komponen Opsional
+                    </h4>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 bg-slate-50 p-4 rounded-xl border border-slate-100">
+                        <label class="flex items-center space-x-2.5 cursor-pointer">
+                            <input type="checkbox" id="l-show-watermark" class="w-4 h-4 text-blue-600 border-slate-300 rounded focus:ring-blue-500">
+                            <span class="text-xs font-medium text-slate-700">Tampilkan Watermark</span>
+                        </label>
+                        <label class="flex items-center space-x-2.5 cursor-pointer">
+                            <input type="checkbox" id="l-show-photo-box" class="w-4 h-4 text-blue-600 border-slate-300 rounded focus:ring-blue-500">
+                            <span class="text-xs font-medium text-slate-700">Tampilkan Kotak Foto</span>
+                        </label>
+                        <label class="flex items-center space-x-2.5 cursor-pointer">
+                            <input type="checkbox" id="l-show-nilai" class="w-4 h-4 text-blue-600 border-slate-300 rounded focus:ring-blue-500">
+                            <span class="text-xs font-medium text-slate-700">Tampilkan Nilai Mapel</span>
+                        </label>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-1">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">URL Gambar Watermark Kustom (PNG Transparan)</label>
+                            <input type="url" id="l-watermark-url" placeholder="https://example.com/logo-watermark.png" 
+                                class="w-full border border-slate-200 rounded-lg p-2 text-xs focus:ring-2 focus:ring-blue-500">
+                            <p class="text-[10px] text-slate-400 mt-1">Kosongkan jika ingin memakai lambang topi kelulusan bawaan.</p>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Tingkat Transparansi Watermark (Opacity)</label>
+                            <select id="l-watermark-opacity" class="w-full border border-slate-200 rounded-lg p-2 text-xs focus:ring-2 focus:ring-blue-500">
+                                <option value="opacity-[0.02]">Sangat Tipis (2%)</option>
+                                <option value="opacity-[0.04]">Tipis (4% - Direkomendasikan)</option>
+                                <option value="opacity-[0.07]">Sedang (7%)</option>
+                                <option value="opacity-[0.10]">Jelas (10%)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BAGIAN 3: Pengaturan Waktu Rilis (Countdown) -->
+                <div class="space-y-4">
+                    <h4 class="font-bold text-xs text-blue-900 uppercase border-b border-slate-100 pb-1.5 flex items-center gap-1.5">
+                        <i class="fa-solid fa-clock"></i> Pengaturan Waktu Pengumuman (Countdown)
+                    </h4>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 bg-slate-50 p-4 rounded-xl border border-slate-100">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Status Kunci Hitung Mundur</label>
+                            <select id="l-countdown-active" class="w-full border border-slate-200 rounded-lg p-2 text-xs focus:ring-2 focus:ring-blue-500 bg-white">
+                                <option value="true">Aktif (Kunci pencarian hingga waktu rilis)</option>
+                                <option value="false">Tidak Aktif (Buka pencarian langsung)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Tanggal Rilis</label>
+                            <input type="date" id="l-release-date" class="w-full border border-slate-200 rounded-lg p-2 text-xs focus:ring-2 focus:ring-blue-500 bg-white">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Jam Rilis</label>
+                            <input type="time" id="l-release-time" class="w-full border border-slate-200 rounded-lg p-2 text-xs focus:ring-2 focus:ring-blue-500 bg-white">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BAGIAN 4: Administrasi & Penandatangan -->
+                <div class="space-y-4">
+                    <h4 class="font-bold text-xs text-blue-900 uppercase border-b border-slate-100 pb-1.5 flex items-center gap-1.5">
+                        <i class="fa-solid fa-signature"></i> Administrasi Surat & Penandatangan
+                    </h4>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Nomor Surat SKL Default</label>
+                            <input type="text" id="l-no-surat" required placeholder="421.3/SKL-SMP/VI/2026" 
+                                class="w-full border border-slate-200 rounded-lg p-2 text-xs focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Kota & Tanggal Surat</label>
+                            <input type="text" id="l-tanggal-surat" required placeholder="Kediri, 12 Juni 2026" 
+                                class="w-full border border-slate-200 rounded-lg p-2 text-xs focus:ring-2 focus:ring-blue-500">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="md:col-span-1">
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Jabatan Penandatangan</label>
+                            <input type="text" id="l-jabatan" required placeholder="Kepala Sekolah SMP Katolik Wijana," 
+                                class="w-full border border-slate-200 rounded-lg p-2 text-xs focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div class="md:col-span-1">
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Nama Lengkap Kepala Sekolah</label>
+                            <input type="text" id="l-kepsek" required placeholder="Sr. Maria Goretti, M.Pd." 
+                                class="w-full border border-slate-200 rounded-lg p-2 text-xs focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div class="md:col-span-1">
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">NIP / Kode Pegawai</label>
+                            <input type="text" id="l-nip" placeholder="NIP. 19741203 200212 2 001" 
+                                class="w-full border border-slate-200 rounded-lg p-2 text-xs focus:ring-2 focus:ring-blue-500">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">URL Tanda Tangan (Format PNG/Transparan)</label>
+                            <input type="url" id="l-ttd-url" placeholder="https://example.com/ttd-kepsek.png" 
+                                class="w-full border border-slate-200 rounded-lg p-2 text-xs focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">URL Gambar Stempel Sekolah</label>
+                            <input type="url" id="l-stempel-url" placeholder="https://example.com/stempel-sekolah.png" 
+                                class="w-full border border-slate-200 rounded-lg p-2 text-xs focus:ring-2 focus:ring-blue-500">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bagian Bawah Form -->
+                <div class="flex gap-2 pt-4 border-t border-slate-100">
+                    <button type="submit" class="flex-1 bg-blue-900 hover:bg-blue-800 text-white text-xs font-bold py-2.5 rounded-lg shadow transition">
+                        Terapkan Desain
+                    </button>
+                    <button type="button" onclick="resetLayoutToDefault()" class="flex-1 bg-red-100 hover:bg-red-200 text-red-700 text-xs font-bold py-2.5 rounded-lg transition">
+                        Reset Default
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- SCRIPT UTAMA -->
+    <script>
+        // Setelan Layout Bawaan
+        const defaultLayout = {
+            logo_yayasan_url: "",
+            logo_url: "",
+            yayasan: "YAYASAN PENDIDIKAN KATOLIK",
+            sekolah: "SMP KATOLIK WIJANA",
+            alamat: "Jl. Rajawali No. 12, Kota Kediri, Jawa Timur, Telp: (0354) 123456 \nEmail: info@smpkwijana.sch.id | Website: www.smpkwijana.sch.id",
+            no_surat: "421.3/SKL-SMP/VI/2026",
+            tanggal_surat: "Kediri, 12 Juni 2026",
+            jabatan: "Kepala Sekolah SMP Katolik Wijana,",
+            kepsek: "Sr. Maria Goretti, M.Pd.",
+            nip: "NIP. 19741203 200212 2 001",
+            ttd_url: "",
+            stempel_url: "",
+            kop_style: "double_logo",
+            font_family: "serif",
+            color_accent: "text-blue-900",
+            spacing_factor: "compact",
+            show_watermark: true,
+            show_photo_box: true,
+            show_nilai: true,
+            watermark_url: "",
+            watermark_opacity: "opacity-[0.04]",
+            countdown_active: false,
+            release_date: "",
+            release_time: ""
+        };
+
+        let activeData = [];
+        let activeLayout = { ...defaultLayout };
+        let useSpreadsheet = false;
+        let sheetUrl = "";
+        let isAdminLoggedIn = false;
+        let countdownInterval = null;
+
+        // Kunci penyimpanan lokal
+        const LOCAL_STORAGE_KEY = "smpk_wijana_custom_students_v2";
+        const SHEET_URL_KEY = "smpk_wijana_sheet_url_v2";
+        const LAYOUT_STORAGE_KEY = "smpk_wijana_layout_config";
+
+        // Fungsi Load Awal
+        window.onload = function() {
+            // Deteksi Parameter URL Terlebih Dahulu (Prioritas Utama untuk Koneksi Multi-Perangkat)
+            const urlParams = new URLSearchParams(window.location.search);
+            const apiParam = urlParams.get('api');
+            
+            if (apiParam) {
+                sheetUrl = decodeURIComponent(apiParam);
+                localStorage.setItem(SHEET_URL_KEY, sheetUrl);
+                document.getElementById("sheet-url").value = sheetUrl;
+            }
+
+            loadLayoutSettings();
+            loadDatabase();
+        };
+
+        // Fungsi Toast Notification Kustom (Menggantikan Browser Alert/Confirm)
+        function showToast(message, type = "success") {
+            const container = document.getElementById("toast-container");
+            const toast = document.createElement("div");
+            toast.className = `flex items-center gap-3 p-4 rounded-xl shadow-lg border text-xs font-semibold transition-all duration-300 transform translate-y-2 opacity-0`;
+            
+            if (type === "success") {
+                toast.className += " bg-emerald-50 text-emerald-800 border-emerald-100";
+                toast.innerHTML = `<i class="fa-solid fa-circle-check text-base text-emerald-500"></i><span>${message}</span>`;
+            } else {
+                toast.className += " bg-red-50 text-red-800 border-red-100";
+                toast.innerHTML = `<i class="fa-solid fa-circle-xmark text-base text-red-500"></i><span>${message}</span>`;
+            }
+            
+            container.appendChild(toast);
+            
+            // Animasi masuk
+            setTimeout(() => {
+                toast.classList.remove("translate-y-2", "opacity-0");
+            }, 10);
+            
+            // Hapus otomatis setelah 3 detik
+            setTimeout(() => {
+                toast.classList.add("opacity-0", "translate-y-[-10px]");
+                setTimeout(() => {
+                    toast.remove();
+                }, 300);
+            }, 3500);
+        }
+
+        // Muat Konfigurasi Tampilan / Layout
+        function loadLayoutSettings() {
+            const savedLayout = localStorage.getItem(LAYOUT_STORAGE_KEY);
+            if (savedLayout) {
+                activeLayout = { ...defaultLayout, ...JSON.parse(savedLayout) };
+            } else {
+                activeLayout = { ...defaultLayout };
+            }
+            applyLayoutToUI();
+            startCountdownTimer();
+        }
+
+        // Terdengar & Update Countdown Hitung Mundur secara real-time
+        function startCountdownTimer() {
+            if (countdownInterval) clearInterval(countdownInterval);
+            
+            const countdownSection = document.getElementById("countdown-section");
+            const searchSection = document.getElementById("search-section");
+            
+            // Evaluasi status aktif hitung mundur
+            if (activeLayout.countdown_active && activeLayout.release_date && activeLayout.release_time) {
+                // Parse target release date (Local timezone format ISO-like)
+                const targetStr = `${activeLayout.release_date}T${activeLayout.release_time}`;
+                const targetTime = new Date(targetStr).getTime();
+                
+                // Format penulisan tanggal target yang indah di UI
+                const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+                const formattedTargetDate = new Date(targetStr).toLocaleDateString('id-ID', dateOptions);
+                document.getElementById("countdown-target-time").innerText = `${formattedTargetDate} - Pukul ${activeLayout.release_time} WIB`;
+
+                countdownInterval = setInterval(() => {
+                    const now = new Date().getTime();
+                    const distance = targetTime - now;
+                    
+                    if (distance > 0) {
+                        // Belum rilis: Kunci form dan tampilkan hitung mundur
+                        countdownSection.classList.remove("hidden");
+                        searchSection.classList.add("hidden");
+                        
+                        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                        
+                        document.getElementById("cd-days").innerText = days.toString().padStart(2, '0');
+                        document.getElementById("cd-hours").innerText = hours.toString().padStart(2, '0');
+                        document.getElementById("cd-minutes").innerText = minutes.toString().padStart(2, '0');
+                        document.getElementById("cd-seconds").innerText = seconds.toString().padStart(2, '0');
+                    } else {
+                        // Sudah rilis! Secara otomatis buka kunci form siswa tanpa refresh
+                        clearInterval(countdownInterval);
+                        countdownSection.classList.add("hidden");
+                        searchSection.classList.remove("hidden");
+                        showToast("Sistem Kelulusan Resmi Dibuka!", "success");
+                    }
+                }, 1000);
+            } else {
+                // Hitung mundur mati: Langsung buka form pencarian
+                countdownSection.classList.add("hidden");
+                searchSection.classList.remove("hidden");
+            }
+        }
+
+        // Terapkan data layout ke komponen HTML
+        function applyLayoutToUI() {
+            document.getElementById("skl-kop-yayasan").innerText = activeLayout.yayasan;
+            document.getElementById("skl-kop-sekolah").innerText = activeLayout.sekolah;
+            document.getElementById("skl-kop-alamat").innerHTML = activeLayout.alamat.replace(/\n/g, "<br>");
+            document.getElementById("skl-no-surat").innerText = activeLayout.no_surat;
+            document.getElementById("skl-tempat-tanggal-surat").innerText = activeLayout.tanggal_surat;
+            document.getElementById("skl-tanda-tangan-jabatan").innerText = activeLayout.jabatan;
+            document.getElementById("skl-nama-kepsek").innerText = activeLayout.kepsek;
+            document.getElementById("skl-nip-kepsek").innerText = activeLayout.nip;
+
+            const matchYear = activeLayout.no_surat.match(/\/20[0-9]{2}/);
+            if (matchYear) {
+                const year = matchYear[0].replace('/', '');
+                document.getElementById("banner-year-text").innerText = "Tahun Ajaran " + (parseInt(year)-1) + "/" + year;
+            }
+
+            document.getElementById("card-school-name").innerText = activeLayout.sekolah;
+
+            const printArea = document.getElementById("print-area");
+            if (activeLayout.font_family === "serif") {
+                printArea.classList.remove("sans-font");
+                printArea.classList.add("serif-font");
+            } else {
+                printArea.classList.remove("serif-font");
+                printArea.classList.add("sans-font");
+            }
+
+            const kopSekolahHeader = document.getElementById("skl-kop-sekolah");
+            kopSekolahHeader.className = `text-lg md:text-xl font-extrabold tracking-wider leading-none uppercase ${activeLayout.color_accent}`;
+
+            const listDetails = document.getElementById("skl-student-details");
+            const statusBadge = document.getElementById("skl-status-badge");
+            const titleSec = document.getElementById("skl-title-section");
+            const sigBlock = document.getElementById("skl-signature-block");
+
+            if (activeLayout.spacing_factor === "compact") {
+                printArea.className = "bg-white p-6 md:p-8 shadow-md border border-slate-200 rounded-lg max-w-2xl mx-auto text-black text-xs relative";
+                listDetails.className = "ml-4 md:ml-8 mb-4 space-y-1.5";
+                statusBadge.className = "p-2.5 bg-slate-100 border border-slate-300 rounded-lg text-center my-4";
+                titleSec.className = "text-center mb-4";
+                sigBlock.className = "flex justify-between items-start mt-6";
+            } else if (activeLayout.spacing_factor === "loose") {
+                printArea.className = "bg-white p-10 md:p-14 shadow-md border border-slate-200 rounded-lg max-w-2xl mx-auto text-black text-sm relative";
+                listDetails.className = "ml-4 md:ml-8 mb-8 space-y-3.5";
+                statusBadge.className = "p-5 bg-slate-100 border border-slate-300 rounded-lg text-center my-8";
+                titleSec.className = "text-center mb-8";
+                sigBlock.className = "flex justify-between items-start mt-16";
+            } else { // Normal
+                printArea.className = "bg-white p-8 md:p-12 shadow-md border border-slate-200 rounded-lg max-w-2xl mx-auto text-black text-sm relative";
+                listDetails.className = "ml-4 md:ml-8 mb-6 space-y-2.5";
+                statusBadge.className = "p-4 bg-slate-100 border border-slate-300 rounded-lg text-center my-6";
+                titleSec.className = "text-center mb-6";
+                sigBlock.className = "flex justify-between items-start mt-12";
+            }
+
+            const logoYayasanBox = document.getElementById("skl-logo-yayasan-box");
+            const logoBox = document.getElementById("skl-logo-box");
+            const cardLogoBox = document.getElementById("card-logo-container");
+
+            if (activeLayout.kop_style === "no_logo") {
+                logoYayasanBox.classList.add("hidden");
+                logoBox.classList.add("hidden");
+            } else if (activeLayout.kop_style === "left_logo") {
+                logoYayasanBox.classList.add("hidden");
+                logoBox.classList.remove("hidden");
+                
+                if (activeLayout.logo_url && activeLayout.logo_url.trim() !== "") {
+                    logoBox.innerHTML = `<img src="${activeLayout.logo_url}" alt="Logo Sekolah" class="w-full h-full object-cover">`;
+                } else {
+                    logoBox.innerHTML = `<div class="w-full h-full bg-slate-200 flex items-center justify-center text-[10px] font-extrabold uppercase text-slate-500">LOGO</div>`;
+                }
+            } else { // Double logo
+                logoYayasanBox.classList.remove("hidden");
+                logoBox.classList.remove("hidden");
+
+                if (activeLayout.logo_yayasan_url && activeLayout.logo_yayasan_url.trim() !== "") {
+                    logoYayasanBox.innerHTML = `<img src="${activeLayout.logo_yayasan_url}" alt="Logo Yayasan" class="w-full h-full object-cover">`;
+                } else {
+                    logoYayasanBox.innerHTML = `<div class="w-full h-full bg-slate-200 flex items-center justify-center text-[10px] font-extrabold uppercase text-slate-500">YAYASAN</div>`;
+                }
+
+                if (activeLayout.logo_url && activeLayout.logo_url.trim() !== "") {
+                    logoBox.innerHTML = `<img src="${activeLayout.logo_url}" alt="Logo Sekolah" class="w-full h-full object-cover">`;
+                } else {
+                    logoBox.innerHTML = `<div class="w-full h-full bg-slate-200 flex items-center justify-center text-[10px] font-extrabold uppercase text-slate-500">SEKOLAH</div>`;
+                }
+            }
+
+            if (activeLayout.logo_url && activeLayout.logo_url.trim() !== "") {
+                cardLogoBox.innerHTML = `<img src="${activeLayout.logo_url}" alt="Logo" class="w-full h-full object-cover">`;
+            } else {
+                cardLogoBox.innerHTML = activeLayout.sekolah.charAt(0);
+            }
+
+            const watermark = document.getElementById("skl-watermark");
+            if (activeLayout.show_watermark) {
+                watermark.className = `absolute inset-0 flex items-center justify-center pointer-events-none select-none z-0 ${activeLayout.watermark_opacity}`;
+                if (activeLayout.watermark_url && activeLayout.watermark_url.trim() !== "") {
+                    watermark.innerHTML = `<img src="${activeLayout.watermark_url}" alt="Watermark" class="w-72 h-72 object-contain mix-blend-multiply">`;
+                } else {
+                    watermark.innerHTML = `<i class="fa-solid fa-graduation-cap text-[15rem] text-blue-950"></i>`;
+                }
+            } else {
+                watermark.innerHTML = "";
+                watermark.className = "hidden";
+            }
+
+            const photoBox = document.getElementById("skl-photo-box");
+            if (activeLayout.show_photo_box) {
+                photoBox.classList.remove("hidden");
+            } else {
+                photoBox.classList.add("hidden");
+            }
+
+            const ttdContainer = document.getElementById("skl-ttd-img-container");
+            const stempelContainer = document.getElementById("skl-stempel-img-container");
+
+            if (activeLayout.ttd_url && activeLayout.ttd_url.trim() !== "") {
+                ttdContainer.innerHTML = `<img src="${activeLayout.ttd_url}" alt="Tanda Tangan" class="w-full h-full object-contain">`;
+                ttdContainer.classList.remove("hidden");
+            } else {
+                ttdContainer.innerHTML = "";
+                ttdContainer.classList.add("hidden");
+            }
+
+            if (activeLayout.stempel_url && activeLayout.stempel_url.trim() !== "") {
+                stempelContainer.innerHTML = `<img src="${activeLayout.stempel_url}" alt="Stempel" class="w-full h-full object-contain mix-blend-multiply">`;
+                stempelContainer.classList.remove("hidden");
+            } else {
+                stempelContainer.innerHTML = "";
+                stempelContainer.classList.add("hidden");
+            }
+        }
+
+        // Inisialisasi Database
+        async function loadDatabase() {
+            const savedLocalData = localStorage.getItem(LOCAL_STORAGE_KEY);
+            const savedUrl = localStorage.getItem(SHEET_URL_KEY);
+
+            if (savedUrl) {
+                sheetUrl = savedUrl;
+                document.getElementById("sheet-url").value = savedUrl;
+                const success = await fetchDataFromSheet(savedUrl);
+                if (!success) {
+                    fallbackToLocal(savedLocalData);
+                }
+            } else {
+                fallbackToLocal(savedLocalData);
+            }
+        }
+
+        function fallbackToLocal(savedLocalData) {
+            if (savedLocalData) {
+                activeData = JSON.parse(savedLocalData);
+                useSpreadsheet = false;
+                updateBadge("Lokal (Custom)");
+            } else {
+                activeData = []; 
+                updateBadge("Kosong");
+            }
+        }
+
+        // Ganti status di panel dashboard admin
+        function updateBadge(type) {
+            const statSumber = document.getElementById("stat-sumber");
+            if (statSumber) {
+                if (type === "Google Sheets") {
+                    statSumber.innerText = "Google Sheets (Live)";
+                } else if (type === "Lokal (Custom)") {
+                    statSumber.innerText = "Lokal Browser";
+                } else {
+                    statSumber.innerText = "Belum Terhubung";
+                }
+            }
+        }
+
+        // Ambil data dari Google Sheets URL atau Google Apps Script JSON API
+        async function fetchDataFromSheet(url) {
+            try {
+                const response = await fetch(url);
+                if (!response.ok) throw new Error("Gagal mengambil data");
+                
+                const contentType = response.headers.get("content-type");
+                
+                if (contentType && contentType.indexOf("application/json") !== -1) {
+                    const jsonResult = await response.json();
+                    
+                    if (jsonResult.status === "success" && Array.isArray(jsonResult.data)) {
+                        activeData = jsonResult.data;
+                        useSpreadsheet = true;
+                        updateBadge("Google Sheets");
+                        
+                        if (jsonResult.layout) {
+                            activeLayout = { ...defaultLayout, ...jsonResult.layout };
+                            localStorage.setItem(LAYOUT_STORAGE_KEY, JSON.stringify(activeLayout));
+                            applyLayoutToUI();
+                            startCountdownTimer();
+                        }
+                        return true;
+                    } else {
+                        throw new Error(jsonResult.message || "Format data Apps Script salah.");
+                    }
+                } else {
+                    const csvText = await response.text();
+                    const parsedData = parseCSV(csvText);
+                    if (parsedData.length > 0) {
+                        activeData = parsedData;
+                        useSpreadsheet = true;
+                        updateBadge("Google Sheets");
+                        return true;
+                    } else {
+                        throw new Error("Format CSV tidak sesuai.");
+                    }
+                }
+            } catch (err) {
+                console.error(err);
+                return false;
+            }
+        }
+
+        // Parsing CSV Sederhana menjadi Array Objek
+        function parseCSV(csvText) {
+            const lines = csvText.split(/\r?\n/);
+            if (lines.length < 2) return [];
+
+            const headers = lines[0].split(',').map(h => h.trim().replace(/^["']|["']$/g, '').toLowerCase());
+            const result = [];
+
+            for (let i = 1; i < lines.length; i++) {
+                if (!lines[i]) continue;
+                
+                let row = [];
+                let insideQuote = false;
+                let entry = "";
+                for (let char of lines[i]) {
+                    if (char === '"') {
+                        insideQuote = !insideQuote;
+                    } else if (char === ',' && !insideQuote) {
+                        row.push(entry.trim());
+                        entry = "";
+                    } else {
+                        entry += char;
+                    }
+                }
+                row.push(entry.trim());
+
+                if (row.length === headers.length) {
+                    let obj = {};
+                    headers.forEach((header, index) => {
+                        obj[header] = row[index].replace(/^["']|["']$/g, '');
+                    });
+                    result.push(obj);
+                }
+            }
+            return result;
+        }
+
+        // Simpan data aktif ke penyimpanan lokal browser
+        function saveToLocalStorage() {
+            localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(activeData));
+            updateBadge("Lokal (Custom)");
+        }
+
+        // Salin Tautan Berbagi Cerdas (Shareable Link)
+        function copyShareableLink() {
+            if (!sheetUrl) {
+                showToast("Harap hubungkan Google Sheet atau Apps Script API terlebih dahulu.", "error");
+                return;
+            }
+            
+            const cleanBaseUrl = window.location.href.split('?')[0];
+            const shareableUrl = `${cleanBaseUrl}?api=${encodeURIComponent(sheetUrl)}`;
+            
+            const tempInput = document.createElement("input");
+            tempInput.value = shareableUrl;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand("copy");
+            document.body.removeChild(tempInput);
+            
+            showToast("Tautan Berbagi disalin! Siswa otomatis terhubung.", "success");
+        }
+
+        // Cari data kelulusan siswa (Sisi Siswa)
+        function handleSearch(event) {
+            event.preventDefault();
+            const inputVal = document.getElementById("search-input").value.trim().toLowerCase();
+
+            if (!inputVal) return;
+
+            document.getElementById("search-section").classList.add("hidden");
+            document.getElementById("loading-section").classList.remove("hidden");
+
+            setTimeout(() => {
+                const student = activeData.find(s => 
+                    (s.no_peserta && s.no_peserta.toLowerCase() === inputVal) || 
+                    (s.nisn && s.nisn.toLowerCase() === inputVal)
+                );
+
+                document.getElementById("loading-section").classList.add("hidden");
+
+                if (student) {
+                    showResult(student);
+                } else {
+                    document.getElementById("error-section").classList.remove("hidden");
+                }
+            }, 800);
+        }
+
+        // Menampilkan output hasil kelulusan (SKL)
+        function showResult(student) {
+            document.getElementById("skl-nama").innerText = student.nama || "-";
+            document.getElementById("skl-ttl").innerText = student.ttl || "-";
+            document.getElementById("skl-ortu").innerText = student.ortu || "-";
+            document.getElementById("skl-no-ujian").innerText = student.no_peserta || "-";
+            document.getElementById("skl-nisn").innerText = `${student.nis || '-'} / ${student.nisn || '-'}`;
+            
+            const statusLabel = document.getElementById("skl-status");
+            statusLabel.innerText = student.status || "LULUS";
+            if (student.status && student.status.toUpperCase() !== "LULUS") {
+                statusLabel.className = "text-3xl font-extrabold tracking-widest mt-1 text-red-600 uppercase";
+            } else {
+                statusLabel.className = "text-3xl font-extrabold tracking-widest mt-1 text-emerald-700 uppercase";
+            }
+
+            const nilaiContainer = document.getElementById("nilai-container");
+            const nilaiRows = document.getElementById("nilai-rows");
+            
+            if (activeLayout.show_nilai) {
+                const mapelMap = {
+                    "nilai_agama": "Pendidikan Agama & Budi Pekerti",
+                    "nilai_indo": "Bahasa Indonesia",
+                    "nilai_ing": "Bahasa Inggris",
+                    "nilai_ipa": "Ilmu Pengetahuan Alam (IPA)",
+                    "nilai_mat": "Matematika",
+                    "nilai_ips": "Ilmu Pengetahuan Sosial (IPS)"
+                };
+
+                let tableHTML = "";
+                let rowIdx = 1;
+                let hasValue = false;
+
+                for (let [key, name] of Object.entries(mapelMap)) {
+                    if (student[key] && student[key].toString().trim() !== "") {
+                        hasValue = true;
+                        tableHTML += `
+                            <tr>
+                                <td class="border border-slate-400 px-3 py-1.5 text-center">${rowIdx++}</td>
+                                <td class="border border-slate-400 px-3 py-1.5 font-medium">${name}</td>
+                                <td class="border border-slate-400 px-3 py-1.5 text-center font-bold">${student[key]}</td>
+                            </tr>
+                        `;
+                    }
+                }
+
+                if (hasValue) {
+                    nilaiRows.innerHTML = tableHTML;
+                    nilaiContainer.classList.remove("hidden");
+                } else {
+                    nilaiContainer.classList.add("hidden");
+                }
+            } else {
+                nilaiContainer.classList.add("hidden");
+            }
+
+            document.getElementById("result-section").classList.remove("hidden");
+            document.getElementById("result-section").scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Reset pencarian
+        function resetSearch() {
+            document.getElementById("search-input").value = "";
+            document.getElementById("result-section").classList.add("hidden");
+            document.getElementById("error-section").classList.add("hidden");
+            document.getElementById("search-section").classList.remove("hidden");
+            // Kembalikan verifikasi timer
+            startCountdownTimer();
+        }
+
+        // Navigasi ke Halaman Utama
+        function goToHome() {
+            if (isAdminLoggedIn) {
+                logoutAdmin();
+            } else {
+                resetSearch();
+            }
+        }
+
+        // ==================== CONTROLLER ADMIN ====================
+
+        // Fungsi Buka & Tutup Modal Login Admin
+        function openAdminModal() {
+            if (isAdminLoggedIn) {
+                switchToAdminView();
+                return;
+            }
+            const modal = document.getElementById("admin-login-modal");
+            const card = document.getElementById("login-modal-card");
+            modal.classList.remove("hidden");
+            setTimeout(() => {
+                card.classList.remove("scale-95", "opacity-0");
+                card.classList.add("scale-100", "opacity-100");
+                document.getElementById("admin-username").focus();
+            }, 10);
+        }
+
+        function closeAdminModal() {
+            const modal = document.getElementById("admin-login-modal");
+            const card = document.getElementById("login-modal-card");
+            card.classList.remove("scale-100", "opacity-100");
+            card.classList.add("scale-95", "opacity-0");
+            setTimeout(() => {
+                modal.classList.add("hidden");
+                document.getElementById("admin-username").value = "";
+                document.getElementById("admin-password").value = "";
+            }, 300);
+        }
+
+        // Penanganan Proses Login Admin
+        function handleAdminLogin(event) {
+            event.preventDefault();
+            const username = document.getElementById("admin-username").value.trim();
+            const password = document.getElementById("admin-password").value;
+            
+            if (username === "admin" && password === "adminwijana") {
+                isAdminLoggedIn = true;
+                closeAdminModal();
+                switchToAdminView();
+                showToast("Selamat datang, Administrator!", "success");
+            } else {
+                showToast("Username atau kata sandi salah!", "error");
+            }
+        }
+
+        // Beralih Layar ke View Admin
+        function switchToAdminView() {
+            document.getElementById("student-view").classList.add("hidden");
+            document.getElementById("result-section").classList.add("hidden");
+            document.getElementById("admin-view").classList.remove("hidden");
+            renderAdminTable();
+        }
+
+        // Keluar dari Panel Admin
+        function logoutAdmin() {
+            if (confirm("Apakah Anda ingin keluar dari panel admin?")) {
+                isAdminLoggedIn = false;
+                document.getElementById("admin-view").classList.add("hidden");
+                document.getElementById("student-view").classList.remove("hidden");
+                resetSearch();
+                showToast("Anda telah keluar.", "success");
+            }
+        }
+
+        // Render Tabel Data di Dashboard Admin
+        function renderAdminTable() {
+            const searchQuery = document.getElementById("admin-search-input").value.trim().toLowerCase();
+            const tableBody = document.getElementById("admin-table-body");
+            
+            let filtered = activeData;
+            if (searchQuery) {
+                filtered = activeData.filter(s => 
+                    (s.nama && s.nama.toLowerCase().includes(searchQuery)) ||
+                    (s.no_peserta && s.no_peserta.toLowerCase().includes(searchQuery)) ||
+                    (s.nisn && s.nisn.toLowerCase().includes(searchQuery))
+                );
+            }
+
+            // Hitung statistik
+            const total = activeData.length;
+            const lulus = activeData.filter(s => s.status && s.status.toUpperCase() === "LULUS").length;
+            const tidakLulus = total - lulus;
+
+            document.getElementById("stat-total").innerText = total;
+            document.getElementById("stat-lulus").innerText = lulus;
+            document.getElementById("stat-tidak").innerText = tidakLulus;
+
+            if (filtered.length === 0) {
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="6" class="p-8 text-center text-slate-400 italic">
+                            Belum ada data siswa di database. Hubungkan Spreadsheet atau impor JSON.
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            let html = "";
+            filtered.forEach((student, index) => {
+                const mapels = ["nilai_agama", "nilai_indo", "nilai_ing", "nilai_ipa", "nilai_mat", "nilai_ips"];
+                let totalNilai = 0;
+                let mapelCount = 0;
+                mapels.forEach(key => {
+                    if (student[key] && !isNaN(student[key]) && student[key] !== "") {
+                        totalNilai += parseFloat(student[key]);
+                        mapelCount++;
+                    }
+                });
+                const rtp = mapelCount > 0 ? (totalNilai / mapelCount).toFixed(2) : "-";
+
+                const isLulus = student.status && student.status.toUpperCase() === "LULUS";
+                const badgeClass = isLulus ? "bg-emerald-100 text-emerald-800" : "bg-red-100 text-red-800";
+
+                const originalIndex = activeData.findIndex(s => s.no_peserta === student.no_peserta);
+
+                html += `
+                    <tr class="hover:bg-slate-50 border-b border-slate-100">
+                        <td class="p-3">
+                            <div class="font-mono font-bold text-slate-700">${student.no_peserta || "-"}</div>
+                            <div class="text-[10px] text-slate-400">NISN: ${student.nisn || "-"}</div>
+                        </td>
+                        <td class="p-3 font-semibold text-slate-800 uppercase">${student.nama || "-"}</td>
+                        <td class="p-3">
+                            <div class="text-[11px] text-slate-600">Ortu: ${student.ortu || "-"}</div>
+                            <div class="text-[10px] text-slate-400">${student.ttl || "-"}</div>
+                        </td>
+                        <td class="p-3 text-center">
+                            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${badgeClass}">
+                                ${student.status || "LULUS"}
+                            </span>
+                        </td>
+                        <td class="p-3 text-center font-bold text-slate-600">${rtp}</td>
+                        <td class="p-3 text-center">
+                            <div class="flex justify-center gap-1.5">
+                                <button onclick="editStudent(${originalIndex})" class="text-blue-600 hover:text-blue-800 p-1 hover:bg-blue-50 rounded" title="Edit">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                </button>
+                                <button onclick="deleteStudent(${originalIndex})" class="text-red-500 hover:text-red-700 p-1 hover:bg-red-50 rounded" title="Hapus">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+            tableBody.innerHTML = html;
+        }
+
+        // Hapus data siswa dari database
+        function deleteStudent(index) {
+            if (confirm(`Apakah Anda yakin ingin menghapus data siswa "${activeData[index].nama}"?`)) {
+                activeData.splice(index, 1);
+                saveToLocalStorage();
+                renderAdminTable();
+                showToast("Siswa berhasil dihapus.", "success");
+            }
+        }
+
+        // Buka formulir input siswa (Baru / Edit)
+        function openStudentFormModal() {
+            document.getElementById("student-form").reset();
+            document.getElementById("edit-index").value = "-1";
+            document.getElementById("student-modal-title").innerHTML = `<i class="fa-solid fa-user-plus text-yellow-400"></i> Tambah Siswa Baru`;
+            
+            const modal = document.getElementById("student-form-modal");
+            const card = document.getElementById("student-modal-card");
+            modal.classList.remove("hidden");
+            setTimeout(() => {
+                card.classList.remove("scale-95", "opacity-0");
+                card.classList.add("scale-100", "opacity-100");
+            }, 10);
+        }
+
+        // Buka formulir untuk melakukan edit siswa
+        function editStudent(index) {
+            openStudentFormModal();
+            document.getElementById("student-modal-title").innerHTML = `<i class="fa-solid fa-user-pen text-yellow-400"></i> Edit Data Siswa`;
+            
+            const student = activeData[index];
+            document.getElementById("edit-index").value = index;
+            document.getElementById("f-no-ujian").value = student.no_peserta || "";
+            document.getElementById("f-nisn").value = student.nisn || "";
+            document.getElementById("f-nama").value = student.nama || "";
+            document.getElementById("f-ttl").value = student.ttl || "";
+            document.getElementById("f-ortu").value = student.ortu || "";
+            document.getElementById("f-status").value = student.status || "LULUS";
+            document.getElementById("f-n-agama").value = student.nilai_agama || "";
+            document.getElementById("f-n-indo").value = student.nilai_indo || "";
+            document.getElementById("f-n-ing").value = student.nilai_ing || "";
+            document.getElementById("f-n-ipa").value = student.nilai_ipa || "";
+            document.getElementById("f-n-mat").value = student.nilai_mat || "";
+            document.getElementById("f-n-ips").value = student.nilai_ips || "";
+        }
+
+        function closeStudentFormModal() {
+            const modal = document.getElementById("student-form-modal");
+            const card = document.getElementById("student-modal-card");
+            card.classList.remove("scale-100", "opacity-100");
+            card.classList.add("scale-95", "opacity-0");
+            setTimeout(() => {
+                modal.classList.add("hidden");
+            }, 300);
+        }
+
+        // Simpan input formulir siswa
+        function saveStudentForm(event) {
+            event.preventDefault();
+            const index = parseInt(document.getElementById("edit-index").value);
+            
+            const studentObj = {
+                no_peserta: document.getElementById("f-no-ujian").value.trim(),
+                nisn: document.getElementById("f-nisn").value.trim(),
+                nama: document.getElementById("f-nama").value.trim(),
+                ttl: document.getElementById("f-ttl").value.trim(),
+                ortu: document.getElementById("f-ortu").value.trim(),
+                status: document.getElementById("f-status").value,
+                nilai_agama: document.getElementById("f-n-agama").value.trim(),
+                nilai_indo: document.getElementById("f-n-indo").value.trim(),
+                nilai_ing: document.getElementById("f-n-ing").value.trim(),
+                nilai_ipa: document.getElementById("f-n-ipa").value.trim(),
+                nilai_mat: document.getElementById("f-n-mat").value.trim(),
+                nilai_ips: document.getElementById("f-n-ips").value.trim()
+            };
+
+            if (index === -1) {
+                const isDuplicate = activeData.some(s => s.no_peserta.toLowerCase() === studentObj.no_peserta.toLowerCase());
+                if (isDuplicate) {
+                    showToast("Nomor Ujian sudah terdaftar!", "error");
+                    return;
+                }
+                activeData.push(studentObj);
+                showToast("Siswa baru berhasil ditambahkan.", "success");
+            } else {
+                activeData[index] = studentObj;
+                showToast("Data siswa berhasil diperbarui.", "success");
+            }
+
+            saveToLocalStorage();
+            closeStudentFormModal();
+            renderAdminTable();
+        }
+
+        // Kosongkan database
+        function resetToDefaultData() {
+            if (confirm("Apakah Anda yakin ingin menghapus seluruh data siswa di database lokal?")) {
+                localStorage.removeItem(LOCAL_STORAGE_KEY);
+                activeData = [];
+                updateBadge("Kosong");
+                renderAdminTable();
+                showToast("Database lokal berhasil dikosongkan.", "success");
+            }
+        }
+
+        // Ekspor Data ke File JSON
+        function exportData() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(activeData, null, 2));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", "data_kelulusan_smpk_wijana.json");
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+            showToast("Backup JSON berhasil diunduh.", "success");
+        }
+
+        // Pemicu Dialog Input File Impor
+        function triggerImport() {
+            document.getElementById("import-file").click();
+        }
+
+        // Impor Data dari File JSON
+        function importData(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const imported = JSON.parse(e.target.result);
+                    if (Array.isArray(imported)) {
+                        activeData = imported;
+                        saveToLocalStorage();
+                        renderAdminTable();
+                        showToast(`Berhasil mengimpor ${imported.length} data siswa!`, "success");
+                    } else {
+                        showToast("Format JSON salah, harus berupa Array.", "error");
+                    }
+                } catch (err) {
+                    showToast("Gagal mengurai file JSON.", "error");
+                }
+            };
+            reader.readAsText(file);
+            document.getElementById("import-file").value = "";
+        }
+
+        // ==================== CONFIG SPREADSHEET ====================
+
+        // Buka modal konfigurasi Google Sheet
+        function openConfigModal() {
+            const modal = document.getElementById("config-modal");
+            const card = document.getElementById("modal-card");
+            modal.classList.remove("hidden");
+            setTimeout(() => {
+                card.classList.remove("scale-95", "opacity-0");
+                card.classList.add("scale-100", "opacity-100");
+            }, 10);
+        }
+
+        function closeConfigModal() {
+            const modal = document.getElementById("config-modal");
+            const card = document.getElementById("modal-card");
+            card.classList.remove("scale-100", "opacity-100");
+            card.classList.add("scale-95", "opacity-0");
+            setTimeout(() => {
+                modal.classList.add("hidden");
+            }, 300);
+        }
+
+        // Simpan Konfigurasi Spreadsheet / Apps Script Web App
+        async function saveConfig() {
+            const urlInput = document.getElementById("sheet-url").value.trim();
+            if (!urlInput) {
+                showToast("Tautan tidak boleh kosong.", "error");
+                return;
+            }
+
+            const success = await fetchDataFromSheet(urlInput);
+            if (success) {
+                localStorage.setItem(SHEET_URL_KEY, urlInput);
+                localStorage.removeItem(LOCAL_STORAGE_KEY);
+                closeConfigModal();
+                showToast("Database Google Sheets berhasil disinkronkan!", "success");
+                if (isAdminLoggedIn) {
+                    renderAdminTable();
+                } else {
+                    resetSearch();
+                }
+            } else {
+                showToast("Koneksi gagal. Cek URL Anda.", "error");
+            }
+        }
+
+        // Kembalikan ke database lokal kosong dari Modal Google Sheet
+        function useDemoData() {
+            localStorage.removeItem(SHEET_URL_KEY);
+            localStorage.removeItem(LOCAL_STORAGE_KEY);
+            document.getElementById("sheet-url").value = "";
+            activeData = [];
+            updateBadge("Kosong");
+            closeConfigModal();
+            showToast("Berhasil mereset database.", "success");
+            if (isAdminLoggedIn) {
+                renderAdminTable();
+            } else {
+                resetSearch();
+            }
+        }
+
+        // ==================== KUSTOMISASI LAYOUT ====================
+
+        // Buka Modal Atur Layout
+        function openLayoutSettingsModal() {
+            document.getElementById("l-logo-yayasan-url").value = activeLayout.logo_yayasan_url || "";
+            document.getElementById("l-logo-url").value = activeLayout.logo_url || "";
+            document.getElementById("l-yayasan").value = activeLayout.yayasan || "";
+            document.getElementById("l-sekolah").value = activeLayout.sekolah || "";
+            document.getElementById("l-alamat").value = activeLayout.alamat || "";
+            document.getElementById("l-no-surat").value = activeLayout.no_surat || "";
+            document.getElementById("l-tanggal-surat").value = activeLayout.tanggal_surat || "";
+            document.getElementById("l-jabatan").value = activeLayout.jabatan || "";
+            document.getElementById("l-kepsek").value = activeLayout.kepsek || "";
+            document.getElementById("l-nip").value = activeLayout.nip || "";
+            document.getElementById("l-ttd-url").value = activeLayout.ttd_url || "";
+            document.getElementById("l-stempel-url").value = activeLayout.stempel_url || "";
+            
+            // Setelan tata letak tambahan baru di-bind ke form modal
+            document.getElementById("l-kop-style").value = activeLayout.kop_style || "double_logo";
+            document.getElementById("l-font-family").value = activeLayout.font_family || "serif";
+            document.getElementById("l-color-accent").value = activeLayout.color_accent || "text-blue-900";
+            document.getElementById("l-spacing-factor").value = activeLayout.spacing_factor || "compact";
+            document.getElementById("l-show-watermark").checked = activeLayout.show_watermark !== false;
+            document.getElementById("l-show-photo-box").checked = activeLayout.show_photo_box !== false;
+            document.getElementById("l-show-nilai").checked = activeLayout.show_nilai !== false;
+            
+            // Mengisi input form watermark kustom baru
+            document.getElementById("l-watermark-url").value = activeLayout.watermark_url || "";
+            document.getElementById("l-watermark-opacity").value = activeLayout.watermark_opacity || "opacity-[0.04]";
+
+            // Mengisi input form rilis waktu baru
+            document.getElementById("l-countdown-active").value = activeLayout.countdown_active ? "true" : "false";
+            document.getElementById("l-release-date").value = activeLayout.release_date || "";
+            document.getElementById("l-release-time").value = activeLayout.release_time || "";
+
+            const modal = document.getElementById("layout-settings-modal");
+            const card = document.getElementById("layout-modal-card");
+            modal.classList.remove("hidden");
+            setTimeout(() => {
+                card.classList.remove("scale-95", "opacity-0");
+                card.classList.add("scale-100", "opacity-100");
+            }, 10);
+        }
+
+        function closeLayoutSettingsModal() {
+            const modal = document.getElementById("layout-settings-modal");
+            const card = document.getElementById("layout-modal-card");
+            card.classList.remove("scale-100", "opacity-100");
+            card.classList.add("scale-95", "opacity-0");
+            setTimeout(() => {
+                modal.classList.add("hidden");
+            }, 300);
+        }
+
+        // Simpan Konfigurasi Layout (dan kirim ke Cloud jika menggunakan Apps Script)
+        async function saveLayoutSettings(event) {
+            event.preventDefault();
+            
+            const newLayout = {
+                logo_yayasan_url: document.getElementById("l-logo-yayasan-url").value.trim(),
+                logo_url: document.getElementById("l-logo-url").value.trim(),
+                yayasan: document.getElementById("l-yayasan").value.trim(),
+                sekolah: document.getElementById("l-sekolah").value.trim(),
+                alamat: document.getElementById("l-alamat").value.trim(),
+                no_surat: document.getElementById("l-no-surat").value.trim(),
+                tanggal_surat: document.getElementById("l-tanggal-surat").value.trim(),
+                jabatan: document.getElementById("l-jabatan").value.trim(),
+                kepsek: document.getElementById("l-kepsek").value.trim(),
+                nip: document.getElementById("l-nip").value.trim(),
+                ttd_url: document.getElementById("l-ttd-url").value.trim(),
+                stempel_url: document.getElementById("l-stempel-url").value.trim(),
+                kop_style: document.getElementById("l-kop-style").value,
+                font_family: document.getElementById("l-font-family").value,
+                color_accent: document.getElementById("l-color-accent").value,
+                spacing_factor: document.getElementById("l-spacing-factor").value,
+                show_watermark: document.getElementById("l-show-watermark").checked,
+                show_photo_box: document.getElementById("l-show-photo-box").checked,
+                show_nilai: document.getElementById("l-show-nilai").checked,
+                watermark_url: document.getElementById("l-watermark-url").value.trim(),
+                watermark_opacity: document.getElementById("l-watermark-opacity").value,
+                // Mengambil nilai input rilis baru
+                countdown_active: document.getElementById("l-countdown-active").value === "true",
+                release_date: document.getElementById("l-release-date").value,
+                release_time: document.getElementById("l-release-time").value
+            };
+
+            activeLayout = newLayout;
+            localStorage.setItem(LAYOUT_STORAGE_KEY, JSON.stringify(activeLayout));
+            applyLayoutToUI();
+            startCountdownTimer();
+            
+            // Coba kirim konfigurasi layout ini ke Cloud (Google Sheets) melalui Apps Script agar perangkat lain langsung sinkron
+            if (sheetUrl && sheetUrl.includes("script.google.com")) {
+                try {
+                    await fetch(sheetUrl, {
+                        method: "POST",
+                        mode: "no-cors",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ action: "saveLayout", layout: activeLayout })
+                    });
+                    showToast("Layout & Waktu SKL disimpan ke Google Sheets!", "success");
+                } catch(e) {
+                    showToast("Gagal mengirim data ke Cloud Google Sheets.", "error");
+                }
+            } else {
+                showToast("Layout diperbarui lokal di browser.", "success");
+            }
+
+            closeLayoutSettingsModal();
+        }
+
+        // Kembalikan Layout ke Default Bawaan
+        function resetLayoutToDefault() {
+            if (confirm("Apakah Anda yakin ingin mengembalikan layout surat ke setelan default SMP Katolik Wijana?")) {
+                localStorage.removeItem(LAYOUT_STORAGE_KEY);
+                activeLayout = { ...defaultLayout };
+                applyLayoutToUI();
+                startCountdownTimer();
+                closeLayoutSettingsModal();
+                showToast("Layout dikembalikan ke default.", "success");
+            }
+        }
+    </script>
+</body>
+</html>
