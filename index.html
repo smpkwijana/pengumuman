@@ -52,12 +52,13 @@
     <!-- Main Content (Siswa View) -->
     <main id="student-view" class="flex-grow flex flex-col items-center justify-center px-4 py-8 md:py-16 no-print">
         
-        <!-- Logo & Nama Sekolah (Diletakkan di atas Card sebagai ganti Header) -->
-        <div class="flex flex-col items-center mb-6 text-center select-none cursor-pointer" ondblclick="openAdminModal()" title=" ">
-            <div href="https://ibb.co.com/xtFTSQnL"><img src="https://i.ibb.co.com/xtFTSQnL/5c73ff42-de7e-46f8-abf2-efa96f7ab493-1.png" alt="5c73ff42-de7e-46f8-abf2-efa96f7ab493-1" border="1">
+        <!-- Logo & Nama Sekolah -->
+        <div class="flex flex-col items-center mb-6 text-center select-none cursor-pointer" ondblclick="openAdminModal()" title="Klik 2x untuk Login Admin">
+            <div id="card-logo-container" class="w-16 h-16 bg-yellow-500 rounded-full flex items-center justify-center font-bold text-blue-900 text-3xl shadow-md overflow-hidden mb-3 border-2 border-white">
+                W
             </div>
             <h1 id="card-school-name" class="text-base md:text-lg font-extrabold tracking-wider uppercase text-blue-900 leading-tight">SMP KATOLIK WIJANA</h1>
-            <p id="card-school-motto" class="text-xs text-slate-500 font-medium">Membentuk Generasi Cerdas, Berkarakter, dan Berprestasi bersama SMP Katolik Wijana</p>
+            <p id="card-school-motto" class="text-xs text-slate-500 font-medium">Veritas, Caritas, Intellegentia</p>
         </div>
 
         <div id="search-card" class="max-w-md w-full bg-white rounded-2xl shadow-xl border border-slate-100 overflow-hidden transition-all duration-300 transform hover:shadow-2xl">
@@ -107,20 +108,20 @@
                 </div>
             </div>
 
-            <!-- Form Pencarian (Tampilan Default Utama) -->
+            <!-- Form Pencarian -->
             <div class="p-6 md:p-8" id="search-section">
                 <p class="text-sm text-slate-500 mb-6 text-center leading-relaxed">
-                    Silakan masukkan **NISN** Anda untuk melihat status kelulusan secara online.
+                    Silakan masukkan **Nomor Peserta Ujian** atau **NISN** Anda untuk melihat status kelulusan secara online.
                 </p>
 
                 <form id="search-form" onsubmit="handleSearch(event)">
                     <div class="mb-5">
-                        <label for="search-input" class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-2">NISN</label>
+                        <label for="search-input" class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-2">Nomor Ujian / NISN</label>
                         <div class="relative">
                             <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400">
                                 <i class="fa-solid fa-id-card"></i>
                             </span>
-                            <input type="text" id="search-input" required placeholder="NISN" 
+                            <input type="text" id="search-input" required placeholder="Contoh: 2-25-01-02-005 atau NISN" 
                                 class="w-full pl-10 pr-4 py-3 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm font-medium transition duration-150">
                         </div>
                     </div>
@@ -144,7 +145,7 @@
                 </div>
                 <h3 class="text-lg font-bold text-slate-800 mb-2">Data Tidak Ditemukan</h3>
                 <p class="text-sm text-slate-500 mb-6 leading-relaxed">
-                    NISN yang Anda masukkan tidak terdaftar. Pastikan format penulisan sudah benar atau hubungi panitia kelulusan sekolah.
+                    Nomor Peserta atau NISN yang Anda masukkan tidak terdaftar. Pastikan format penulisan sudah benar atau hubungi panitia kelulusan sekolah.
                 </p>
                 <button onclick="resetSearch()" class="inline-flex items-center gap-2 text-sm bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold py-2 px-5 rounded-lg transition duration-150">
                     <i class="fa-solid fa-arrow-left"></i> Kembali
@@ -163,22 +164,22 @@
                         <i class="fa-solid fa-toolbox text-yellow-400"></i>
                         Dashboard Administrator Kelulusan
                     </h2>
-                    <p class="text-xs text-slate-300 mt-1">Kelola data siswa, status kelulusan, nilai ujian, kustomisasi layout SKL, and Google Sheets.</p>
+                    <p class="text-xs text-slate-300 mt-1">Kelola data siswa, status kelulusan, nilai ujian, dan kustomisasi layout SKL.</p>
                 </div>
                 <div class="flex flex-wrap gap-2">
-                    <!-- Google Sheet / Apps Script Button -->
-                    <button onclick="openConfigModal()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs py-2 px-4 rounded-lg transition flex items-center gap-1.5">
-                        <i class="fa-solid fa-file-excel"></i> Hubungkan Google Sheets / API
-                    </button>
+                    <!-- Atur Layout SKL Button -->
                     <button onclick="openLayoutSettingsModal()" class="bg-amber-500 hover:bg-amber-600 text-blue-950 font-bold text-xs py-2 px-4 rounded-lg transition flex items-center gap-1.5">
                         <i class="fa-solid fa-palette"></i> Atur Layout SKL
                     </button>
+                    <!-- Bagikan Link App Button -->
                     <button id="btn-share-link" onclick="copyShareableLink()" class="bg-teal-600 hover:bg-teal-500 text-white font-bold text-xs py-2 px-4 rounded-lg transition flex items-center gap-1.5" title="Salin link yang otomatis terhubung untuk disebar ke siswa">
                         <i class="fa-solid fa-share-nodes"></i> Bagikan Link App
                     </button>
+                    <!-- Tambah Siswa Button -->
                     <button onclick="openStudentFormModal()" class="bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs py-2 px-4 rounded-lg transition flex items-center gap-1.5">
                         <i class="fa-solid fa-plus"></i> Tambah Siswa
                     </button>
+                    <!-- Ekspor & Impor JSON -->
                     <button onclick="exportData()" class="bg-slate-800 hover:bg-slate-700 text-white font-semibold text-xs py-2 px-4 rounded-lg transition flex items-center gap-1.5">
                         <i class="fa-solid fa-file-export"></i> Ekspor JSON
                     </button>
@@ -186,6 +187,7 @@
                         <i class="fa-solid fa-file-import"></i> Impor JSON
                     </button>
                     <input type="file" id="import-file" class="hidden" accept=".json" onchange="importData(event)">
+                    <!-- Keluar Button -->
                     <button onclick="logoutAdmin()" class="bg-red-600 hover:bg-red-500 text-white font-bold text-xs py-2 px-4 rounded-lg transition flex items-center gap-1.5">
                         <i class="fa-solid fa-right-from-bracket"></i> Keluar Ke Siswa
                     </button>
@@ -216,7 +218,7 @@
             <div id="share-warning-banner" class="mx-6 mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg text-xs text-blue-800 flex items-center justify-between">
                 <span class="flex items-center gap-2">
                     <i class="fa-solid fa-circle-info text-blue-600 text-sm"></i>
-                    <span><strong>Tips Multi-Perangkat:</strong> Agar siswa di perangkat lain otomatis terhubung ke data Anda, bagikan aplikasi menggunakan tombol <strong>"Bagikan Link App"</strong> di kanan atas.</span>
+                    <span><strong>Tips Multi-Perangkat:</strong> Database dikoneksikan melalui variabel di dalam kode aplikasi. Anda dapat langsung menyebarkan tautan web utama ini kepada siswa.</span>
                 </span>
             </div>
 
@@ -388,7 +390,7 @@
                     </div>
                 </div>
                 <div class="text-right w-72 relative min-h-[160px]">
-                    <p class="mb-1" id="skl-tempat-tanggal-surat">Jombang, 12 Juni 2026</p>
+                    <p class="mb-1" id="skl-tempat-tanggal-surat">Kediri, 12 Juni 2026</p>
                     <p id="skl-tanda-tangan-jabatan" class="font-semibold">Kepala Sekolah SMP Katolik Wijana,</p>
                     
                     <!-- Area TTD & Stempel (Absolute overlapping container) -->
@@ -403,98 +405,13 @@
                         </div>
                     </div>
 
-                    <p id="skl-nama-kepsek" class="font-bold underline uppercase">Dwi Retno Ruth D., S.Pd.</p>
-                    <p id="skl-nip-kepsek" class="text-xs text-slate-600">NIP. - </p>
+                    <p id="skl-nama-kepsek" class="font-bold underline uppercase">Sr. Maria Goretti, M.Pd.</p>
+                    <p id="skl-nip-kepsek" class="text-xs text-slate-600">NIP. 19741203 200212 2 001</p>
                 </div>
             </div>
 
         </div>
     </section>
-
-    <!-- MODAL CONFIGURASI GOOGLE SHEETS / APPS SCRIPT -->
-    <div id="config-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden no-print">
-        <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden border border-slate-100 transition-all transform scale-95 opacity-0 duration-300" id="modal-card">
-            <div class="bg-blue-900 text-white p-5 flex justify-between items-center">
-                <h3 class="font-bold text-base flex items-center gap-2">
-                    <i class="fa-solid fa-cloud-arrow-down text-yellow-400"></i>
-                    Konfigurasi Google Sheets / Apps Script
-                </h3>
-                <button onclick="closeConfigModal()" class="text-white/80 hover:text-white hover:bg-white/10 rounded-full w-8 h-8 flex items-center justify-center transition">
-                    <i class="fa-solid fa-xmark text-lg"></i>
-                </button>
-            </div>
-            
-            <div class="p-6 space-y-4">
-                <p class="text-xs text-slate-500 leading-relaxed">
-                    Aplikasi ini dapat membaca database kelulusan menggunakan dua metode: **Google Apps Script Web App URL (Sangat Direkomendasikan - Real-time)** atau **Google Sheets CSV Publik**.
-                </p>
-
-                <!-- Panduan Cara Mengambil URL -->
-                <div class="bg-slate-50 p-4 rounded-lg border border-slate-100 text-xs text-slate-600 space-y-2">
-                    <p class="font-bold text-slate-800"><i class="fa-solid fa-code text-blue-600"></i> Cara Menggunakan Google Apps Script (Real-time):</p>
-                    <ol class="list-decimal pl-4 space-y-1">
-                        <li>Buka spreadsheet data kelulusan Anda di Google Drive.</li>
-                        <li>Pilih menu **Ekstensi** &gt; **Apps Script**.</li>
-                        <li>Salin kode Google Apps Script (`code.gs`) yang disediakan sekolah ke dalam editor tersebut.</li>
-                        <li>Klik **Terapkan (Deploy)** &gt; **Terapkan Baru (New Deployment)**.</li>
-                        <li>Atur jenis penerapan ke **Aplikasi Web (Web App)**.</li>
-                        <li>Atur akses *"Yang memiliki akses"* ke **Siapa saja (Anyone)** dan klik **Terapkan**.</li>
-                        <li>Salin **URL Aplikasi Web** yang diberikan lalu tempelkan di bawah ini.</li>
-                    </ol>
-                </div>
-
-                <div>
-                    <label for="sheet-url" class="block text-xs font-semibold uppercase text-slate-600 mb-1.5">Tautan URL (Apps Script Web App / CSV)</label>
-                    <input type="url" id="sheet-url" placeholder="https://script.google.com/macros/s/.../exec atau https://docs.google.com/.../pub?output=csv" 
-                        class="w-full border border-slate-200 rounded-lg p-2.5 text-xs font-mono focus:outline-none focus:ring-2 focus:ring-blue-500">
-                </div>
-
-                <div class="flex gap-2">
-                    <button onclick="saveConfig()" class="flex-1 bg-blue-950 hover:bg-blue-900 text-white text-xs font-bold py-2.5 px-4 rounded-lg shadow transition">
-                        Simpan Koneksi
-                    </button>
-                    <button onclick="useDemoData()" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold py-2.5 px-4 rounded-lg transition">
-                        Gunakan Data Kosong (Reset)
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL LOGIN ADMIN -->
-    <div id="admin-login-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden no-print">
-        <div class="bg-white rounded-2xl shadow-2xl max-w-sm w-full overflow-hidden border border-slate-100 transition-all transform scale-95 opacity-0 duration-300" id="login-modal-card">
-            <div class="bg-blue-955 text-white p-5 text-center">
-                <i class="fa-solid fa-user-shield text-3xl text-yellow-400 mb-2"></i>
-                <h3 class="font-bold text-base">Login Administrator</h3>
-                <p class="text-[11px] text-blue-200">Masukkan akun administrator untuk mengelola pengumuman</p>
-            </div>
-            
-            <form onsubmit="handleAdminLogin(event)" class="p-6 space-y-4">
-                <div>
-                    <label for="admin-username" class="block text-xs font-semibold uppercase text-slate-600 mb-1.5">Nama Pengguna (Username)</label>
-                    <input type="text" id="admin-username" placeholder="" required
-                        class="w-full border border-slate-200 rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-                </div>
-                <div>
-                    <label for="admin-password" class="block text-xs font-semibold uppercase text-slate-600 mb-1.5">Kata Sandi (Password)</label>
-                    <input type="password" id="admin-password" placeholder="" required
-                        class="w-full border border-slate-200 rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-                </div>
-                <div class="text-[10px] text-slate-400 italic bg-slate-50 p-2.5 rounded border border-slate-100">
-                    *User dan Pasword Tanya Pak Deni*
-                </div>
-                <div class="flex gap-2">
-                    <button type="submit" class="flex-1 bg-blue-950 hover:bg-blue-900 text-white text-xs font-bold py-2.5 px-4 rounded-lg shadow transition">
-                        Masuk
-                    </button>
-                    <button type="button" onclick="closeAdminModal()" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold py-2.5 px-4 rounded-lg transition">
-                        Batal
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
 
     <!-- MODAL FORM TAMBAH / EDIT SISWA -->
     <div id="student-form-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden no-print overflow-y-auto">
@@ -849,7 +766,13 @@
         let activeData = [];
         let activeLayout = { ...defaultLayout };
         let useSpreadsheet = false;
-        let sheetUrl = "";
+        
+        // =========================================================================
+        // TEMPELKAN URL GOOGLE APPS SCRIPT WEB APP ANDA DI BAWAH INI (DI DALAM KUTIP)
+        // Contoh: let sheetUrl = "https://script.google.com/macros/s/AKfycbxxxxxxx/exec";
+        // =========================================================================
+        let sheetUrl = "https://script.google.com/macros/s/AKfycbwh6ofjIJUCqTID_4NqwY3Xxm1g1ea_biV-n67QAnseAIvmNfRcsJb4yeot7obtPLfEmA/exec"; 
+        
         let isAdminLoggedIn = false;
         let countdownInterval = null;
 
@@ -860,14 +783,22 @@
 
         // Fungsi Load Awal
         window.onload = function() {
-            // Deteksi Parameter URL Terlebih Dahulu (Prioritas Utama untuk Koneksi Multi-Perangkat)
+            // Deteksi Parameter URL (Sebagai prioritas dinamis jika ada parameter)
             const urlParams = new URLSearchParams(window.location.search);
             const apiParam = urlParams.get('api');
             
             if (apiParam) {
                 sheetUrl = decodeURIComponent(apiParam);
                 localStorage.setItem(SHEET_URL_KEY, sheetUrl);
-                document.getElementById("sheet-url").value = sheetUrl;
+            } else if (sheetUrl && sheetUrl.trim() !== "") {
+                // Gunakan URL permanen dari kode dan simpan di penyimpanan lokal browser
+                localStorage.setItem(SHEET_URL_KEY, sheetUrl);
+            } else {
+                // Ambil sisa data di memori jika tidak ada konfigurasi hardcoded baru
+                const savedUrl = localStorage.getItem(SHEET_URL_KEY);
+                if (savedUrl) {
+                    sheetUrl = savedUrl;
+                }
             }
 
             loadLayoutSettings();
@@ -895,7 +826,7 @@
                 toast.classList.remove("translate-y-2", "opacity-0");
             }, 10);
             
-            // Hapus otomatis setelah 3 detik
+            // Hapus otomatis setelah 3.5 detik
             setTimeout(() => {
                 toast.classList.add("opacity-0", "translate-y-[-10px]");
                 setTimeout(() => {
@@ -914,6 +845,20 @@
             }
             applyLayoutToUI();
             startCountdownTimer();
+        }
+
+        // Ganti status di panel dashboard admin
+        function updateBadge(type) {
+            const statSumber = document.getElementById("stat-sumber");
+            if (statSumber) {
+                if (type === "Google Sheets") {
+                    statSumber.innerText = "Google Sheets (Live)";
+                } else if (type === "Lokal (Custom)") {
+                    statSumber.innerText = "Lokal Browser";
+                } else {
+                    statSumber.innerText = "Belum Terhubung";
+                }
+            }
         }
 
         // Terdengar & Update Countdown Hitung Mundur secara real-time
@@ -1109,8 +1054,10 @@
 
             if (savedUrl) {
                 sheetUrl = savedUrl;
-                document.getElementById("sheet-url").value = savedUrl;
-                const success = await fetchDataFromSheet(savedUrl);
+            }
+            
+            if (sheetUrl) {
+                const success = await fetchDataFromSheet(sheetUrl);
                 if (!success) {
                     fallbackToLocal(savedLocalData);
                 }
@@ -1127,20 +1074,6 @@
             } else {
                 activeData = []; 
                 updateBadge("Kosong");
-            }
-        }
-
-        // Ganti status di panel dashboard admin
-        function updateBadge(type) {
-            const statSumber = document.getElementById("stat-sumber");
-            if (statSumber) {
-                if (type === "Google Sheets") {
-                    statSumber.innerText = "Google Sheets (Live)";
-                } else if (type === "Lokal (Custom)") {
-                    statSumber.innerText = "Lokal Browser";
-                } else {
-                    statSumber.innerText = "Belum Terhubung";
-                }
             }
         }
 
@@ -1448,7 +1381,7 @@
                 tableBody.innerHTML = `
                     <tr>
                         <td colspan="6" class="p-8 text-center text-slate-400 italic">
-                            Belum ada data siswa di database. Hubungkan Spreadsheet atau impor JSON.
+                            Belum ada data siswa di database.
                         </td>
                     </tr>
                 `;
@@ -1651,69 +1584,6 @@
             };
             reader.readAsText(file);
             document.getElementById("import-file").value = "";
-        }
-
-        // ==================== CONFIG SPREADSHEET ====================
-
-        // Buka modal konfigurasi Google Sheet
-        function openConfigModal() {
-            const modal = document.getElementById("config-modal");
-            const card = document.getElementById("modal-card");
-            modal.classList.remove("hidden");
-            setTimeout(() => {
-                card.classList.remove("scale-95", "opacity-0");
-                card.classList.add("scale-100", "opacity-100");
-            }, 10);
-        }
-
-        function closeConfigModal() {
-            const modal = document.getElementById("config-modal");
-            const card = document.getElementById("modal-card");
-            card.classList.remove("scale-100", "opacity-100");
-            card.classList.add("scale-95", "opacity-0");
-            setTimeout(() => {
-                modal.classList.add("hidden");
-            }, 300);
-        }
-
-        // Simpan Konfigurasi Spreadsheet / Apps Script Web App
-        async function saveConfig() {
-            const urlInput = document.getElementById("sheet-url").value.trim();
-            if (!urlInput) {
-                showToast("Tautan tidak boleh kosong.", "error");
-                return;
-            }
-
-            const success = await fetchDataFromSheet(urlInput);
-            if (success) {
-                localStorage.setItem(SHEET_URL_KEY, urlInput);
-                localStorage.removeItem(LOCAL_STORAGE_KEY);
-                closeConfigModal();
-                showToast("Database Google Sheets berhasil disinkronkan!", "success");
-                if (isAdminLoggedIn) {
-                    renderAdminTable();
-                } else {
-                    resetSearch();
-                }
-            } else {
-                showToast("Koneksi gagal. Cek URL Anda.", "error");
-            }
-        }
-
-        // Kembalikan ke database lokal kosong dari Modal Google Sheet
-        function useDemoData() {
-            localStorage.removeItem(SHEET_URL_KEY);
-            localStorage.removeItem(LOCAL_STORAGE_KEY);
-            document.getElementById("sheet-url").value = "";
-            activeData = [];
-            updateBadge("Kosong");
-            closeConfigModal();
-            showToast("Berhasil mereset database.", "success");
-            if (isAdminLoggedIn) {
-                renderAdminTable();
-            } else {
-                resetSearch();
-            }
         }
 
         // ==================== KUSTOMISASI LAYOUT ====================
